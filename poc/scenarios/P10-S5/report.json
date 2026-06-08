@@ -1,0 +1,44 @@
+{
+  "assertions": {
+    "a_e1_fifo_intraclass": {
+      "n_fg_traces": 3,
+      "pass": true
+    },
+    "a_e3_no_starvation": {
+      "fg_done": 3,
+      "fg_expected": 3,
+      "pass": true,
+      "sv_done": 1,
+      "sv_expected": 1
+    },
+    "a_priority": {
+      "applicable": true,
+      "note": "sv_max=1780129117682000us fg_max=1780129127607000us",
+      "pass": true
+    }
+  },
+  "backend": "OllamaBackend",
+  "config": {
+    "budget_secs": 900,
+    "n_foreground": 3,
+    "n_supervisor": 1,
+    "pool_cap": 1
+  },
+  "date_unix": 1780129128,
+  "endpoint": "http://localhost:11434",
+  "hardware_note": "non-representative — see ADR-0052 §D2",
+  "model": "llama3.2:3b",
+  "observations": {
+    "elapsed_ms": 20003,
+    "queue_stats": {
+      "total_admitted": 4,
+      "total_promoted": 0,
+      "total_rejected": 0
+    },
+    "t_infer_ms_median": 13636,
+    "t_infer_ms_p99": 19841
+  },
+  "phase": 10,
+  "scenario": "P10-S5",
+  "verdict": "PASS"
+}

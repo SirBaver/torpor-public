@@ -1,0 +1,12 @@
+# Configuration Cargo pour cible seL4 AArch64 — identique à c10-wx
+[build]
+target = "aarch64-sel4"
+rustflags = ["-Zunstable-options"]
+
+[unstable]
+unstable-options = true
+build-std = ["core", "alloc", "compiler_builtins"]
+build-std-features = ["compiler-builtins-mem"]
+
+[env]
+RUST_TARGET_PATH = { value = "support/targets", relative = true }

@@ -1,0 +1,12 @@
+[workspace]
+members = ["supervisor", "server", "runtime"]
+resolver = "2"
+
+[profile.release]
+panic = "abort"
+opt-level = "z"
+lto = true
+codegen-units = 1
+
+[patch.crates-io]
+redb = { path = "../../redb-fork" }

@@ -1,0 +1,17 @@
+[package]
+name = "os-poc-c4-virtio-blk"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "os-poc-c4-virtio-blk"
+path = "src/main.rs"
+
+[dependencies]
+sel4 = { git = "https://github.com/seL4/rust-sel4", rev = "7a2321f2d84310ba7a09fe7f5988e6dcecde3566" }
+sel4-root-task = { git = "https://github.com/seL4/rust-sel4", rev = "7a2321f2d84310ba7a09fe7f5988e6dcecde3566" }
+sel4-virtio-hal-impl = { git = "https://github.com/seL4/rust-sel4", rev = "7a2321f2d84310ba7a09fe7f5988e6dcecde3566" }
+virtio-drivers = "0.13.0"
+
+[profile.release]
+panic = "abort"

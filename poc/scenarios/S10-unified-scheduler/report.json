@@ -1,0 +1,15 @@
+{
+  "timestamp": "2026-05-22T15:53:51Z",
+  "scenario": "S10-unified-scheduler",
+  "adr": "ADR-0030",
+  "n_agents": 8,
+  "cap_io": 3,
+  "k_infer": 2,
+  "infer_delay_ms": 50,
+  "k_runs": 3,
+  "max_io_concurrent": [2, 3, 2],
+  "elapsed_ms": [205, 206, 203],
+  "passed": 3,
+  "total": 3,
+  "verdict": "pass"
+}

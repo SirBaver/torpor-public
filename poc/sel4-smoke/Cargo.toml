@@ -1,0 +1,18 @@
+[package]
+name = "os-poc-sel4-smoke"
+version = "0.1.0"
+edition = "2021"
+description = "PoC de fumée : Wasmtime minimal features + host function + mesure RSS (ADR-0037)"
+
+[[bin]]
+name = "sel4-smoke"
+path = "src/main.rs"
+
+[dependencies]
+# Wasmtime avec features minimales : pas de WASI, pas de component-model, pas de cache.
+# Objectif : vérifier que le sous-ensemble "cranelift + runtime" compile et exécute
+# correctement un module WASM avec host function Rust.
+# Sur seL4, "cranelift" sera remplacé par chargement de modules .cwasm pré-compilés
+# (feature "runtime" seule, sans cranelift JIT).
+wasmtime = { version = "25", default-features = false, features = ["runtime", "cranelift", "wat"] }
+anyhow = "1"

@@ -1,0 +1,23 @@
+[package]
+name = "os-poc-c3-wasmtime"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "os-poc-c3-wasmtime"
+path = "src/main.rs"
+
+[dependencies]
+# Crates seL4 Foundation — même rev que le Dockerfile rust-root-task-demo
+sel4 = { git = "https://github.com/seL4/rust-sel4", rev = "7a2321f2d84310ba7a09fe7f5988e6dcecde3566" }
+sel4-root-task = { git = "https://github.com/seL4/rust-sel4", rev = "7a2321f2d84310ba7a09fe7f5988e6dcecde3566" }
+# Wasmtime runtime seul — pas de cranelift (incompatible no_std), pas de std
+# Le module WASM est pré-compilé en build.rs (AOT) et embarqué via include_bytes!
+wasmtime = { version = "25", default-features = false, features = ["runtime"] }
+
+[build-dependencies]
+# Wasmtime complet sur le host pour compiler WAT → .cwasm AArch64
+wasmtime = { version = "25", default-features = false, features = ["cranelift", "wat", "all-arch"] }
+
+[profile.release]
+panic = "abort"

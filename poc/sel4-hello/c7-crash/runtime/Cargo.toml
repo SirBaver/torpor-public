@@ -1,0 +1,22 @@
+[package]
+name = "os-poc-c7-crash-runtime"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "os-poc-c7-crash-runtime"
+path = "src/main.rs"
+
+[dependencies]
+sel4 = { git = "https://github.com/seL4/rust-sel4", rev = "7a2321f2d84310ba7a09fe7f5988e6dcecde3566" }
+sel4-dlmalloc = { git = "https://github.com/seL4/rust-sel4", rev = "7a2321f2d84310ba7a09fe7f5988e6dcecde3566" }
+sel4-panicking = { git = "https://github.com/seL4/rust-sel4", rev = "7a2321f2d84310ba7a09fe7f5988e6dcecde3566", features = ["personality", "panic-handler", "alloc"] }
+sel4-panicking-env = { git = "https://github.com/seL4/rust-sel4", rev = "7a2321f2d84310ba7a09fe7f5988e6dcecde3566" }
+sel4-runtime-common = { git = "https://github.com/seL4/rust-sel4", rev = "7a2321f2d84310ba7a09fe7f5988e6dcecde3566", features = ["sel4"] }
+one-shot-mutex = "0.2.1"
+cfg-if = "1.0"
+wasmtime = { version = "25", default-features = false, features = ["runtime"] }
+sha2 = { version = "0.10", default-features = false }
+
+[build-dependencies]
+wasmtime = { version = "25", default-features = false, features = ["cranelift", "wat", "all-arch"] }

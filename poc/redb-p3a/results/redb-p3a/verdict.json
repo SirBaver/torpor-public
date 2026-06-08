@@ -1,0 +1,17 @@
+{
+  "benchmark": "redb-p3a",
+  "timestamp": 1779981570,
+  "db_path": "results/redb-p3a/db",
+  "n_entries": 100000000,
+  "k_passes": 3,
+  "n_reads_per_pass": 10000,
+  "passes": [
+    {"pass": 1, "p50_us": 277, "p95_us": 486, "p99_us": 739, "p999_us": 1229},
+    {"pass": 2, "p50_us": 196, "p95_us": 350, "p99_us": 581, "p999_us": 1023},
+    {"pass": 3, "p50_us": 163, "p95_us": 359, "p99_us": 572, "p999_us": 919}
+  ],
+  "worst_p99_us": 739,
+  "limit_p99_us": 10000,
+  "rocksdb_ref_p99_us": [1368, 1727, 1850],
+  "verdict": "PASS"
+}

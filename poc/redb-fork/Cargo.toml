@@ -1,0 +1,30 @@
+[workspace]
+
+[package]
+name = "redb"
+version = "4.1.0"
+edition = "2024"
+# Fork no_std pour seL4 Phase 9 C.5 (ADR-0042)
+# Source : redb 4.1.0 upstream, portage no_std en cours
+
+[lib]
+name = "redb"
+path = "src/lib.rs"
+
+[features]
+default = []
+# Features déclarées pour que #[cfg(feature = "...")] compile sans warning unexpected_cfgs
+logging = []     # désactivé — pas de log en no_std
+cache_metrics = []
+fuzzing = []    # déclaré pour suppression des warns unexpected_cfgs
+std = []         # désactivé — on est en no_std
+
+[dependencies]
+# Remplacements no_std pour std::sync
+spin = "0.9"
+# hashbrown supprimé : conflit E0464 avec build-std=alloc (nightly seL4).
+# HashMap/HashSet remplacés par BTreeMap/BTreeSet dans compat.rs.
+
+[profile.release]
+panic = "abort"
+opt-level = "s"

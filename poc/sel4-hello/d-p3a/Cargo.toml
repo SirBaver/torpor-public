@@ -1,0 +1,24 @@
+[workspace]
+
+[package]
+name = "os-poc-d-p3a-measure"
+version = "0.1.0"
+edition = "2024"
+# D-P3a — latence P3a sous seL4 sur NVMe réel (ADR-0045 amendement Q1, ADR-0046)
+# Mesure p99 lookup redb sur virtio-blk + cache=none (O_DIRECT, page cache bypassed).
+
+[[bin]]
+name = "os-poc-d-p3a-measure"
+path = "src/main.rs"
+
+[dependencies]
+sel4 = { git = "https://github.com/seL4/rust-sel4", rev = "7a2321f2d84310ba7a09fe7f5988e6dcecde3566" }
+sel4-root-task = { git = "https://github.com/seL4/rust-sel4", rev = "7a2321f2d84310ba7a09fe7f5988e6dcecde3566" }
+sel4-virtio-hal-impl = { git = "https://github.com/seL4/rust-sel4", rev = "7a2321f2d84310ba7a09fe7f5988e6dcecde3566" }
+virtio-drivers = "0.13.0"
+spin = "0.9"
+redb = { path = "../../redb-fork" }
+
+[profile.release]
+panic = "abort"
+opt-level = "s"

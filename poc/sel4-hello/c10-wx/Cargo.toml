@@ -1,0 +1,7 @@
+[workspace]
+members = ["supervisor", "server", "runtime"]
+resolver = "2"
+
+[profile.release]
+panic = "abort"
+opt-level = "s"

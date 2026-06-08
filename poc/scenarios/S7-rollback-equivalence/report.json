@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-05-18T15:00:35Z",
+  "scenario": "S7-rollback-equivalence",
+  "n_actions": 1000,
+  "k_target": 500,
+  "rollback_budget_ms": 100,
+  "k_runs": 5,
+  "rollback_duration_ms": [17, 17, 17, 20, 19],
+  "passed": 5,
+  "total": 5,
+  "verdict": "pass"
+}

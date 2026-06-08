@@ -1,0 +1,26 @@
+[workspace]
+
+[package]
+name = "os-poc-c5-redb-on-virtio"
+version = "0.1.0"
+edition = "2024"
+# Jalon C.5 — intégration redb no_std au-dessus de sel4-virtio-blk
+# ADR-0042 : valide que redb tourne sur le driver bloc seL4 (R1 levé)
+
+[[bin]]
+name = "os-poc-c5-redb-on-virtio"
+path = "src/main.rs"
+
+[dependencies]
+sel4 = { git = "https://github.com/seL4/rust-sel4", rev = "7a2321f2d84310ba7a09fe7f5988e6dcecde3566" }
+sel4-root-task = { git = "https://github.com/seL4/rust-sel4", rev = "7a2321f2d84310ba7a09fe7f5988e6dcecde3566" }
+sel4-virtio-hal-impl = { git = "https://github.com/seL4/rust-sel4", rev = "7a2321f2d84310ba7a09fe7f5988e6dcecde3566" }
+virtio-drivers = "0.13.0"
+spin = "0.9"
+# redb fork no_std — poc/redb-fork/ (../../ depuis poc/sel4-hello/c5-redb-on-virtio/)
+# Accès garanti : le Makefile monte poc/ à /poc dans Docker
+redb = { path = "../../redb-fork" }
+
+[profile.release]
+panic = "abort"
+opt-level = "s"

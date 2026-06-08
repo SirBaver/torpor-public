@@ -1,0 +1,79 @@
+[package]
+name = "agent-sdk"
+version = "0.1.0"
+edition = "2021"
+
+# Pas de dépendances : les agents WASM doivent rester aussi petits que possible.
+# Tout accès aux structures du runtime passe exclusivement par les host functions.
+
+[[example]]
+name = "echo"
+
+[[example]]
+name = "worker_prime"
+
+[[example]]
+name = "supervisor_arith"
+
+[[example]]
+name = "worker_double_check"
+
+[[example]]
+name = "density_worker"
+
+[[example]]
+name = "rollback_target"
+
+[[example]]
+name = "multi_turn"
+
+[[example]]
+name = "llm_worker"
+
+[[example]]
+name = "llm_supervisor"
+
+[[example]]
+name = "orchestrator"
+
+[[example]]
+name = "code_reviewer"
+
+[[example]]
+name = "severity_judge"
+
+[[example]]
+name = "task_step"
+
+[[example]]
+name = "support_triage"
+
+[[example]]
+name = "voter_agent"
+
+[[example]]
+name = "tally_secretary"
+
+[[example]]
+name = "critic_agent"
+
+[[example]]
+name = "incident_aggregator"
+
+[[example]]
+name = "quality_writer"
+
+[[example]]
+name = "approval_agent"
+
+[[example]]
+name = "data_accessor"
+
+[[example]]
+name = "brainstorm_synth"
+
+[[example]]
+name = "hierarchy_synth"
+
+[[example]]
+name = "monitor_agent"

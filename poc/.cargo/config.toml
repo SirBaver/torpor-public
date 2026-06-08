@@ -1,0 +1,11 @@
+# Configuration cargo locale au workspace poc/.
+#
+# [env] CXXFLAGS : GCC récent (≥ 13) ne tire plus <cstdint> transitivement ; la
+# compilation de librocksdb-sys échoue alors sur des types comme uint64_t. Forcer
+# l'inclusion règle le problème une fois pour toutes — plus besoin de préfixer
+# manuellement chaque `cargo build`/`cargo run`.
+#
+# Note : sans `force = true`, cette valeur ne s'applique QUE si CXXFLAGS n'est pas
+# déjà défini dans l'environnement — un CXXFLAGS posé par l'utilisateur a priorité.
+[env]
+CXXFLAGS = "-include cstdint"

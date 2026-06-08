@@ -1,0 +1,16 @@
+[package]
+name = "os-poc-c10-crash-supervisor"
+version = "0.1.0"
+edition = "2024"
+
+[[bin]]
+name = "os-poc-c10-crash-supervisor"
+path = "src/main.rs"
+
+[dependencies]
+sel4 = { git = "https://github.com/seL4/rust-sel4", rev = "7a2321f2d84310ba7a09fe7f5988e6dcecde3566" }
+sel4-root-task = { git = "https://github.com/seL4/rust-sel4", rev = "7a2321f2d84310ba7a09fe7f5988e6dcecde3566" }
+object = { version = "0.38", default-features = false, features = ["read"] }
+sel4-common = { path = "../../sel4-common" }
+
+[build-dependencies]

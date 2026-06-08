@@ -1,0 +1,12 @@
+[package]
+name = "os-poc-reconstruct"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "os-poc-reconstruct"
+path = "src/main.rs"
+
+[dependencies]
+os-poc-causal-log = { path = "../causal-log" }
+hex = { workspace = true }

@@ -1,0 +1,18 @@
+[workspace]
+
+[package]
+name = "redb-p3a"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "redb_p3a"
+path = "src/main.rs"
+
+[dependencies]
+redb = "4"
+rand = "0.8"
+tikv-jemallocator = "0.6"
+
+[profile.release]
+opt-level = 3

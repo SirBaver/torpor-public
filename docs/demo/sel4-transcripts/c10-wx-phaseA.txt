@@ -1,0 +1,46 @@
+seL4 kernel loader | INFO   Entering kernel
+Bootstrapping kernel
+Warning: Could not infer GIC interrupt target ID, assuming 0.
+available phys memory regions: 1
+  [60000000..80000000)
+reserved virt address space regions: 3
+  [8060000000..806023f000)
+  [807fd7b000..807fd7ce98)
+  [807fd7d000..8080000000)
+Booting all finished, dropped to user space
+=== OS-pour-IA : C.10 superviseur W^X (PHASE=0) ===
+[C10] DMA: 16 pages à paddr=0x70000000
+[C10] MMIO: 4 pages à 0x0a000000
+[C10] Phase A: server spawné
+[C10] server: démarrage
+[C10] server: dma_paddr=0x70000000 phase=0
+[C10] server: virtio-blk à VA=0x20003e00
+[C10] server: virtio-blk 16384 secteurs
+[C10] server: redb ouvert (cache 1MB, phase=0)
+[C10] Phase A: server init OK
+[C10] 128 frames JIT pré-mappées RW+XN à VA 0x40000000
+[C10] Phase A: runtime W^X spawné (K=1)
+[C10] runtime W^X: démarrage
+[C10] server Phase A: ring_va=0x691000
+[C10] runtime W^X: module WASM instancié (JIT W^X actif)
+[C10] server: commit → seq=1
+[C10] runtime W^X: run() terminé — K=1 commit sous W^X ✓
+[C10] done_nfn reçu : K=1 commit(s) sous W^X actif
+REOPEN_A_PASS
+C10_HAPPY_PASS
+C10_PASS
+
+[C10] C10_HAPPY_PASS ✓ (K=1 commit sous W^X actif)
+
+[C10] C10_PASS ✓ (happy path superviseur)
+[C10] test négatif : tentative écriture sur page RX va=0x40010000
+Caught cap fault in send phase at address 0
+while trying to handle:
+vm fault on data at address 0x40010000 with status 0x9308004f
+in thread 0x80707e8400 "child of: 'rootserver'" at address 0x25e2a0
+With stack:
+
+[C10] C10_NEG_PASS ✓ (VM fault observé sur page RX — W^X prouvé)
+[C10] Phase A : C10_PASS (happy+neg) ✓
+[C10] disk.img conservé (pas de dd — requis pour Phase B)
+mkdir -p /poc/sel4-hello/c10-wx/build

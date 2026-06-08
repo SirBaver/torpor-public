@@ -1,0 +1,32 @@
+=== Benchmark P3a — redb ===
+DB path : results/redb-p3a/db
+N       : 100000000
+K       : 3
+N_reads : 10000
+Entrées existantes : 0
+
+[population] 100000000 entrées à insérer...
+  [  10.0%] batch 100/1000 | 418108 inserts/s | ETA 215 s
+  [  20.0%] batch 200/1000 | 409453 inserts/s | ETA 195 s
+  [  30.0%] batch 300/1000 | 379273 inserts/s | ETA 185 s
+  [  40.0%] batch 400/1000 | 364157 inserts/s | ETA 165 s
+  [  50.0%] batch 500/1000 | 355080 inserts/s | ETA 141 s
+  [  60.0%] batch 600/1000 | 350249 inserts/s | ETA 114 s
+  [  70.0%] batch 700/1000 | 347618 inserts/s | ETA 86 s
+  [  80.0%] batch 800/1000 | 342667 inserts/s | ETA 58 s
+  [  90.0%] batch 900/1000 | 338702 inserts/s | ETA 30 s
+  [ 100.0%] batch 1000/1000 | 331215 inserts/s | ETA 0 s
+  Population terminée en 301.9 s
+
+[mesure] K=3 passes × 10000 get() aléatoires
+  Pass 1 : p50=277 µs  p95=486 µs  p99=739 µs  p99.9=1229 µs
+  Pass 2 : p50=196 µs  p95=350 µs  p99=581 µs  p99.9=1023 µs
+  Pass 3 : p50=163 µs  p95=359 µs  p99=572 µs  p99.9=919 µs
+
+=== Résultat P3a ===
+  p99 pire cas    : 739 µs
+  Cible p99       : 10000 µs
+  Référence p99 RocksDB SEF-5 : 1 368 / 1 727 / 1 850 µs
+  VERDICT         : PASS
+
+Résultats JSON → results/redb-p3a/verdict.json

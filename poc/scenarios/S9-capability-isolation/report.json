@@ -1,0 +1,14 @@
+{
+  "timestamp": "2026-05-18T17:41:48Z",
+  "scenario": "S9-capability-isolation",
+  "n_children": 10,
+  "criteria": [
+    "P4-a: 100% authorized accesses succeed",
+    "P4-b: 100% unauthorized accesses fail",
+    "P4-c: 100% denials logged as CapabilityDenied (0x14)"
+  ],
+  "adr": "ADR-0029",
+  "passed": 1,
+  "total": 1,
+  "verdict": "pass"
+}

@@ -1,0 +1,17 @@
+[package]
+name = "os-poc-benchmarks"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+os-poc-store = { path = "../store" }
+os-poc-causal-log = { path = "../causal-log" }
+os-poc-capabilities = { path = "../capabilities" }
+os-poc-runtime = { path = "../runtime", features = ["test-fixtures"] }
+wasmtime = { workspace = true }
+tokio = { workspace = true }
+tracing-subscriber = { workspace = true }
+redb = "4"
+rand = "0.8"
+tempfile = "3"
+tikv-jemallocator = { workspace = true }

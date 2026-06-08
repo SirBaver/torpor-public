@@ -1,0 +1,12 @@
+{
+  "timestamp": "2026-05-18T16:36:35Z",
+  "scenario": "S8-determinism",
+  "property": "P5",
+  "sef": "SEF-6",
+  "n_actions": 1000,
+  "clock_start_base": 1700000000000,
+  "k_runs": 5,
+  "passed": 5,
+  "total": 5,
+  "verdict": "pass"
+}

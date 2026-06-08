@@ -1,0 +1,16 @@
+[package]
+name = "os-poc-capabilities"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+sha2 = { workspace = true }
+serde = { workspace = true }
+thiserror = "1"
+
+[dev-dependencies]
+criterion = { workspace = true }
+
+[[bench]]
+name = "revoke_latency"
+harness = false

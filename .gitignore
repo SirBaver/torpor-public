@@ -1,0 +1,46 @@
+# Artefacts de build Rust
+target/
+**/target/
+
+# Jalon C.1 — clone du demo officiel seL4 (non versionné dans ce repo)
+poc/sel4-hello/rust-root-task-demo/
+
+# Rapports générés par les harnesses de test
+poc/scenarios/report.json
+poc/scenarios/S6-crash-atomicity/report.json
+poc/scenarios/S6-crash-atomicity/work/
+poc/scenarios/S7-rollback-equivalence/work/
+poc/scenarios/S8-determinism/work/
+poc/scenarios/S10-unified-scheduler/work/
+poc/scenarios/S11-evict-wake/work/
+poc/scenarios/S12-scheduler-coordinator/work/
+poc/scenarios/S13-persistence-restart/work/
+poc/scenarios/S14-causal-lookup/work/
+
+# Données de soak / benchmarks (DB RocksDB, fichiers fio)
+poc/results/
+
+# Artefacts de build seL4 + images disque (jalons C.x)
+poc/sel4-hello/**/build/
+*.img
+
+# Archives résultats générées par run.sh
+t5bis-results-*.tar.gz
+
+# Fichiers d'environnement / local
+.env
+*.local
+
+# IDE / OS
+.DS_Store
+*.swp
+
+# Claude Code
+.claude/scheduled_tasks.lock
+poc/scenarios/ICSR-drop-caches/work/
+
+# Démonstrateur TUI — log/store éphémères (chemin stable wipé à chaque run)
+poc/demo-work/
+
+# Logs de run seL4 régénérables (transcript curé c10-wx-phaseA.txt versionné)
+docs/demo/sel4-transcripts/*-run.log

@@ -1,0 +1,17 @@
+[package]
+name = "os-poc-sel4-hello"
+version = "0.1.0"
+edition = "2021"
+
+[[bin]]
+name = "os-poc-sel4-hello"
+path = "src/main.rs"
+
+[dependencies]
+# Crates seL4 Foundation — même rev que le Dockerfile de rust-root-task-demo (seL4 15.0.0)
+# SEL4_PREFIX doit être défini à la compilation (=/opt/seL4 dans Docker C.1)
+sel4 = { git = "https://github.com/seL4/rust-sel4", rev = "7a2321f2d84310ba7a09fe7f5988e6dcecde3566" }
+sel4-root-task = { git = "https://github.com/seL4/rust-sel4", rev = "7a2321f2d84310ba7a09fe7f5988e6dcecde3566" }
+
+[profile.release]
+panic = "abort"

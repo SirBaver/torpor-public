@@ -1,0 +1,121 @@
+{
+  "timestamp": "2026-05-22T16:15:50Z",
+  "scenario": "S11-evict-wake",
+  "adr": "ADR-0030",
+  "n_agents": 3,
+  "n_actions": 10,
+  "k_runs": 3,
+  "passed": 3,
+  "total": 3,
+  "verdict": "pass",
+  "runs": [
+    {
+      "scenario": "S11-evict-wake",
+      "adr": "ADR-0030",
+      "n_agents": 3,
+      "n_actions": 10,
+      "results": {
+        "dormant_after_evict": 3,
+        "dormant_after_wake": 0,
+        "suspended_log_events": 3,
+        "evicted_states": [
+          {
+            "id": "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]",
+            "seq": 10,
+            "has_snapshot": true
+          },
+          {
+            "id": "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]",
+            "seq": 10,
+            "has_snapshot": true
+          },
+          {
+            "id": "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2]",
+            "seq": 10,
+            "has_snapshot": true
+          }
+        ]
+      },
+      "properties": {
+        "P_alpha_all_evicted": true,
+        "P_alpha_post_wake_empty": true,
+        "P_beta_state_preserved": true,
+        "P_gamma_snapshot_chain": true,
+        "P_delta_suspended_logged": true
+      },
+      "verdict": "pass"
+    },
+    {
+      "scenario": "S11-evict-wake",
+      "adr": "ADR-0030",
+      "n_agents": 3,
+      "n_actions": 10,
+      "results": {
+        "dormant_after_evict": 3,
+        "dormant_after_wake": 0,
+        "suspended_log_events": 3,
+        "evicted_states": [
+          {
+            "id": "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]",
+            "seq": 10,
+            "has_snapshot": true
+          },
+          {
+            "id": "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]",
+            "seq": 10,
+            "has_snapshot": true
+          },
+          {
+            "id": "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2]",
+            "seq": 10,
+            "has_snapshot": true
+          }
+        ]
+      },
+      "properties": {
+        "P_alpha_all_evicted": true,
+        "P_alpha_post_wake_empty": true,
+        "P_beta_state_preserved": true,
+        "P_gamma_snapshot_chain": true,
+        "P_delta_suspended_logged": true
+      },
+      "verdict": "pass"
+    },
+    {
+      "scenario": "S11-evict-wake",
+      "adr": "ADR-0030",
+      "n_agents": 3,
+      "n_actions": 10,
+      "results": {
+        "dormant_after_evict": 3,
+        "dormant_after_wake": 0,
+        "suspended_log_events": 3,
+        "evicted_states": [
+          {
+            "id": "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]",
+            "seq": 10,
+            "has_snapshot": true
+          },
+          {
+            "id": "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1]",
+            "seq": 10,
+            "has_snapshot": true
+          },
+          {
+            "id": "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2]",
+            "seq": 10,
+            "has_snapshot": true
+          }
+        ]
+      },
+      "properties": {
+        "P_alpha_all_evicted": true,
+        "P_alpha_post_wake_empty": true,
+        "P_beta_state_preserved": true,
+        "P_gamma_snapshot_chain": true,
+        "P_delta_suspended_logged": true
+      },
+      "verdict": "pass"
+    }
+  ]
+}

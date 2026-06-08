@@ -1,0 +1,77 @@
+{
+  "timestamp": "2026-05-23T08:39:01Z",
+  "scenario": "S12-scheduler-coordinator",
+  "adr": "ADR-0031",
+  "n_agents": 6,
+  "n_dormant": 3,
+  "cap_io": 2,
+  "k_runs": 3,
+  "passed": 3,
+  "total": 3,
+  "verdict": "pass",
+  "runs": [
+    {
+      "scenario": "S12-scheduler-coordinator",
+      "adr": "ADR-0031",
+      "n_agents": 6,
+      "n_dormant": 3,
+      "n_active": 3,
+      "cap_io": 2,
+      "results": {
+        "n_woken": 3,
+        "dormant_after_deliver": 0,
+        "direct_deliveries": 3,
+        "io_admitted": 3,
+        "io_rejected": 0
+      },
+      "properties": {
+        "P_alpha_all_dormants_woken": true,
+        "P_beta_cap_io_respected": true,
+        "P_gamma_active_bypass_c2": true
+      },
+      "verdict": "pass"
+    },
+    {
+      "scenario": "S12-scheduler-coordinator",
+      "adr": "ADR-0031",
+      "n_agents": 6,
+      "n_dormant": 3,
+      "n_active": 3,
+      "cap_io": 2,
+      "results": {
+        "n_woken": 3,
+        "dormant_after_deliver": 0,
+        "direct_deliveries": 3,
+        "io_admitted": 3,
+        "io_rejected": 0
+      },
+      "properties": {
+        "P_alpha_all_dormants_woken": true,
+        "P_beta_cap_io_respected": true,
+        "P_gamma_active_bypass_c2": true
+      },
+      "verdict": "pass"
+    },
+    {
+      "scenario": "S12-scheduler-coordinator",
+      "adr": "ADR-0031",
+      "n_agents": 6,
+      "n_dormant": 3,
+      "n_active": 3,
+      "cap_io": 2,
+      "results": {
+        "n_woken": 3,
+        "dormant_after_deliver": 0,
+        "direct_deliveries": 3,
+        "io_admitted": 3,
+        "io_rejected": 0
+      },
+      "properties": {
+        "P_alpha_all_dormants_woken": true,
+        "P_beta_cap_io_respected": true,
+        "P_gamma_active_bypass_c2": true
+      },
+      "verdict": "pass"
+    }
+  ]
+}

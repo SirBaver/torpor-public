@@ -1,0 +1,11 @@
+{
+  "timestamp": "2026-05-26T14:27:18Z",
+  "scenario": "S13-persistence-restart",
+  "property": "persistance",
+  "sef": "SEF-1",
+  "n_actions": 100,
+  "k_runs": 5,
+  "passed": 5,
+  "total": 5,
+  "verdict": "pass"
+}

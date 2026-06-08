@@ -1,0 +1,10 @@
+[workspace]
+members = ["supervisor", "server", "runtime"]
+resolver = "2"
+
+# sel4-common est dans poc/sel4-hello/sel4-common/ — crate commune C.10 (ADR-0047)
+
+
+[profile.release]
+panic = "abort"
+opt-level = "s"

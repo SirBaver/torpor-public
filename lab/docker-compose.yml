@@ -1,0 +1,38 @@
+services:
+  ollama:
+    image: ollama/ollama:latest
+    volumes:
+      - ollama-data:/root/.ollama
+    healthcheck:
+      test: ["CMD", "ollama", "list"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  daemon:
+    build: .
+    depends_on:
+      ollama:
+        condition: service_healthy
+    environment:
+      - OLLAMA_HOST=http://ollama:11434
+      - OLLAMA_MODEL=${OLLAMA_MODEL:-qwen2.5:3b}
+      - DAEMON_PORT=8888
+      - DB_PATH=/app/data/agent.db
+      - LOG_DIR=/app/logs
+      - SYSTEM_PROMPT_FILE=${SYSTEM_PROMPT_FILE:-/app/config/system_prompt.txt}
+      - OUTPUT_FORMAT=${OUTPUT_FORMAT:-}
+      - MAX_TOOL_ITERATIONS=10
+      - ALLOW_RESET=1
+    volumes:
+      - agent-data:/app/data
+      - agent-logs:/app/logs
+    ports:
+      - "8888:8888"
+    restart: unless-stopped
+
+volumes:
+  ollama-data:
+  agent-data:
+  agent-logs:

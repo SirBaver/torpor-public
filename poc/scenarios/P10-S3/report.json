@@ -1,0 +1,41 @@
+{
+  "assertions": {
+    "p_alpha_no_famine": {
+      "n_completed": 6,
+      "n_expected": 6,
+      "pass": true
+    },
+    "p_beta_traceability": {
+      "n_req": 6,
+      "n_resp": 6,
+      "pass": true
+    },
+    "p_gamma_pool_empty": {
+      "active_count": 0,
+      "pass": true
+    }
+  },
+  "backend": "OllamaBackend",
+  "config": {
+    "budget_secs": 600,
+    "n_workers": 6,
+    "pool_cap": 2
+  },
+  "date_unix": 1780129107,
+  "endpoint": "http://localhost:11434",
+  "hardware_note": "non-representative — see ADR-0052 §D2",
+  "model": "llama3.2:3b",
+  "observations": {
+    "elapsed_ms": 20007,
+    "queue_stats": {
+      "total_admitted": 6,
+      "total_promoted": 0,
+      "total_rejected": 0
+    },
+    "t_infer_ms_median": 12534,
+    "t_infer_ms_p99": 18000
+  },
+  "phase": 10,
+  "scenario": "P10-S3",
+  "verdict": "PASS"
+}

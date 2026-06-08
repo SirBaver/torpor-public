@@ -1,0 +1,322 @@
+[package]
+name = "os-poc-runtime"
+version = "0.1.0"
+edition = "2021"
+
+[features]
+# ADR-0024 : injecteur de panne pour tester l'atomicité du journal de compensation.
+# Ne doit JAMAIS être actif dans le build release CI standard.
+crash-injection = []
+# Expose les modules WASM de test (WAT constants) pour les crates externes (ex. benchmarks).
+# Activer uniquement dans les devDependencies ou les tests d'intégration.
+test-fixtures = []
+# demo-tui (lot 1) : active la dépendance ratatui pour le démonstrateur TUI live.
+demo-tui = ["dep:ratatui"]
+# demo-tamper : active l'affordance de corruption test-only du log causal pour le
+# binaire `log-tamper` (scénario vérificateur tiers). Jamais en build release standard.
+demo-tamper = ["os-poc-causal-log/test-utils"]
+
+[dependencies]
+tokio = { workspace = true }
+wasmtime = { workspace = true }
+os-poc-store = { path = "../store" }
+os-poc-causal-log = { path = "../causal-log" }
+os-poc-capabilities = { path = "../capabilities" }
+rmp-serde = { workspace = true }
+sha2 = { workspace = true }
+bincode = { workspace = true }
+tracing = { workspace = true }
+thiserror = "1"
+tokio-util = { workspace = true }
+# OllamaBackend (ADR-0019 §D-D) : appels HTTP vers Ollama local.
+reqwest = { version = "0.12", default-features = false, features = ["json", "rustls-tls"] }
+serde_json = { workspace = true }
+serde = { workspace = true }
+# demo-tui (lot 1) : démonstrateur TUI live — rendu du DAG causal en temps réel.
+# Read-only sur le log ; n'altère pas le comportement du runtime (livrable use case).
+ratatui = { version = "0.29", optional = true }
+
+[dev-dependencies]
+criterion = { workspace = true }
+tempfile = "3"
+os-poc-causal-log = { path = "../causal-log", features = ["test-utils"] }
+
+[[bench]]
+name = "commit_barrier"
+harness = false
+
+# SEF-5 — binaire de test traçabilité causale (P3a — latence + complétude).
+# Population N=10⁸ entrées + K échantillons ground truth + R mesures de latence.
+[[bin]]
+name = "sef5-runner"
+path = "src/bin/sef5_runner.rs"
+
+# SEF-1 — binaire de test persistance d'état après redémarrage.
+# Phase 1 : N actions → shutdown propre. Phase 2 : réouverture → 4 propriétés vérifiées.
+[[bin]]
+name = "sef1-runner"
+path = "src/bin/sef1_runner.rs"
+
+# SEF-4 — binaires de test atomicité crash (ADR-0027 régime SIGKILL).
+# Compilent uniquement avec `--features crash-injection` ; sans la feature,
+# `required-features` empêche cargo de tenter une compilation muette.
+[[bin]]
+name = "sef4-victim"
+path = "src/bin/sef4_victim.rs"
+required-features = ["crash-injection"]
+
+[[bin]]
+name = "sef4-verify"
+path = "src/bin/sef4_verify.rs"
+
+# SEF-2 — binaire de test rollback transactionnel (P2). Pas de crash-injection :
+# il utilise Scheduler::rollback en cours d'exécution puis vérifie quatre
+# propriétés sur le log et le store.
+[[bin]]
+name = "sef2-runner"
+path = "src/bin/sef2_runner.rs"
+
+# SEF-12 — Rollback adversarial (campagne P2, ADR-0053 §D-P2) : V2.2 rollback²,
+# V2.3 rollback + flood immédiat, V2.4 liveness sous charge.
+[[bin]]
+name = "sef12-runner"
+path = "src/bin/sef12_runner.rs"
+
+# SEF-13 — Traçabilité causale adversariale (campagne P3, ADR-0053 §D-P3) :
+# V3.3 action_id forgé (intégrité content-addressed), V3.4 documenté non-constructible.
+[[bin]]
+name = "sef13-runner"
+path = "src/bin/sef13_runner.rs"
+
+# SEF-6 — binaire de test déterminisme de transition d'état (P5).
+# Lance deux instances avec LogicalClock identique et compare hash final + séquence
+# d'action_ids. Pas de crash-injection : pas d'arrêt de process.
+[[bin]]
+name = "sef6-runner"
+path = "src/bin/sef6_runner.rs"
+
+# S10 — Scénario scheduler unifié C1+C2 (ADR-0030).
+# N=8 agents, cap_io=3, k_infer=2 — vérifie borne I/O + borne inférence + priorité.
+[[bin]]
+name = "s10-runner"
+path = "src/bin/s10_runner.rs"
+
+# S11 — Cycle éviction/réveil (ADR-0030 §FutureWork).
+# N=3 agents, 10 actions par agent — vérifie evict → dormant → wake → continuité causale.
+[[bin]]
+name = "s11-runner"
+path = "src/bin/s11_runner.rs"
+
+# S12 — SchedulerCoordinator réveil à la demande (ADR-0031).
+# N=6 agents, n_dormant=3, cap_io=2 — vérifie P-α (réveil), P-β (borne C2), P-γ (bypass C2 actifs).
+[[bin]]
+name = "s12-runner"
+path = "src/bin/s12_runner.rs"
+
+# P10-S3 — Phase 10 : borne dure d'inférence sous OllamaBackend (ADR-0052).
+# N workers, pool_cap=2, assertions P-α/P-β/P-γ + observations queue_stats.
+[[bin]]
+name = "p10-s3-runner"
+path = "src/bin/p10_s3_runner.rs"
+
+# P10-S5 — Phase 10 : fairness + priorité sous OllamaBackend (ADR-0052).
+# N_fg + N_sv, pool_cap=1, assertions A-priorité/A-E3/A-E1 via QueueTrace.
+[[bin]]
+name = "p10-s5-runner"
+path = "src/bin/p10_s5_runner.rs"
+
+# Harness I-CSR — phase d'écriture (spec/10 §4, ADR-0051 §Amendement).
+# Écrit N commits synthétiques puis induit une coupure paramétrée.
+# Modes : drop (arrêt propre) | exit (SIGKILL simulé via process::exit).
+[[bin]]
+name = "icsr-writer"
+path = "src/bin/icsr_writer.rs"
+
+# Harness I-CSR — phase de vérification (spec/10 §4, ADR-0051 §Amendement).
+# Rouvre store + log, charge le témoin JSON, vérifie l'invariant I-CSR.
+[[bin]]
+name = "icsr-verifier"
+path = "src/bin/icsr_verifier.rs"
+
+# S15 — Crash machine concurrent (UC-17 / ADR-0050 D4 / ADR-0027 D3).
+# Writer : spawne N agents concurrents, kill par process::exit(1) au seuil.
+[[bin]]
+name = "s15-writer"
+path = "src/bin/s15_writer.rs"
+
+# S15 — oracle P6 valid-prefix : rouvre store + log froid, vérifie préfixe
+# valide par agent (gap + I-CSR + parent_ids).
+[[bin]]
+name = "s15-verifier"
+path = "src/bin/s15_verifier.rs"
+
+# Runner interactif — agent conversationnel multi-tour (ADR-0012).
+# Charge multi_turn.wasm, loop stdin → Message::Data → réponse depuis le log.
+[[bin]]
+name = "chat-runner"
+path = "src/bin/chat_runner.rs"
+
+# Pipeline deux agents — A(analyse) → B(synthèse), log causal partagé.
+[[bin]]
+name = "pipeline-runner"
+path = "src/bin/pipeline_runner.rs"
+
+# Runner superviseur — Worker → request_validation → Superviseur → ValidationResponse.
+[[bin]]
+name = "supervisor-runner"
+path = "src/bin/supervisor_runner.rs"
+
+# Éviction + wake avec restauration de contexte (ADR-0030/0031/0012).
+[[bin]]
+name = "evict-wake-runner"
+path = "src/bin/evict_wake_runner.rs"
+
+# Chaîne A→B→C avec causalité cross-agent (ADR-0003).
+[[bin]]
+name = "chain-runner"
+path = "src/bin/chain_runner.rs"
+
+# N agents en parallèle, pool_cap=2, scheduler priorité Supervisor > Foreground.
+[[bin]]
+name = "parallel-runner"
+path = "src/bin/parallel_runner.rs"
+
+# Spawn dynamique d'un spécialiste déclenché par un Event dans le log.
+[[bin]]
+name = "orchestrate-runner"
+path = "src/bin/orchestrate_runner.rs"
+
+# Démonstration P2 : rollback d'état agent.
+[[bin]]
+name = "rollback-runner"
+path = "src/bin/rollback_runner.rs"
+
+# Pipeline de revue de code avec audit causal cross-agent.
+# reviewer (bugs/sécu) → judge (sévérité + verdict) → audit trail dans le log.
+[[bin]]
+name = "code-review-runner"
+path = "src/bin/code_review_runner.rs"
+
+# Tâche longue interruptible : N étapes committées dans le log, reprise après interruption.
+# Démontre P1a : RAM WASM volatile, log causal autoritaire.
+[[bin]]
+name = "long-task-runner"
+path = "src/bin/long_task_runner.rs"
+
+# Support client avec routing dynamique : réponse directe ou escalade vers spécialiste.
+# Décision ANSWER/ESCALADE committée dans le log, spawn dynamique causalement tracé.
+[[bin]]
+name = "support-runner"
+path = "src/bin/support_runner.rs"
+
+# Décision collective par vote majoritaire — N agents indépendants, dissidences préservées.
+[[bin]]
+name = "consensus-runner"
+path = "src/bin/consensus_runner.rs"
+
+# Boucle draft→critique itérative : rédaction assistée avec feedback structuré.
+# Chaque itération atomique dans le log, rollback possible à tout draft intermédiaire.
+[[bin]]
+name = "iterative-runner"
+path = "src/bin/iterative_runner.rs"
+
+# Triage d'incident : fan-out 3 spécialistes parallèles + fan-in agrégateur causal.
+[[bin]]
+name = "incident-runner"
+path = "src/bin/incident_runner.rs"
+
+# Agent à mémoire longue : le log causal EST la mémoire inter-sessions.
+# Apprentissage sur N sessions, rappel complet après redémarrage simulé.
+[[bin]]
+name = "memory-runner"
+path = "src/bin/memory_runner.rs"
+
+# P2 en action réelle : brief incomplet → mauvaise décision → rollback → recommandation corrigée.
+# Démontre que le rollback restaure l'état WASM et trace l'événement dans le log.
+[[bin]]
+name = "decision-correction-runner"
+path = "src/bin/decision_correction_runner.rs"
+
+# A2 en action réelle : quality_writer.wasm se corrige via agent_self_rollback(1).
+# Draft provisoire + QUALITY:FAIL + SelfRollback + draft corrigé — tout dans le log append-only.
+[[bin]]
+name = "self-correct-runner"
+path = "src/bin/self_correct_runner.rs"
+
+# P3b en action réelle : traversée DAG causal depuis une décision finale.
+# Pipeline brief→analyse→décision, puis BFS backwards sur parent_ids.
+[[bin]]
+name = "audit-query-runner"
+path = "src/bin/audit_query_runner.rs"
+
+# A3 en action réelle : agent propose plan risqué → AwaitingValidation → revieweur IA → verdict.
+[[bin]]
+name = "approval-runner"
+path = "src/bin/approval_runner.rs"
+
+# P4 en action réelle : accès capability-gated, CapabilityDenied loggué par le runtime.
+[[bin]]
+name = "capability-runner"
+path = "src/bin/capability_runner.rs"
+
+# P3b fan-in réel : 3 brainstormers parallèles + synthétiseur avec barrier multi-parents.
+[[bin]]
+name = "brainstorm-runner"
+path = "src/bin/brainstorm_runner.rs"
+
+# P1a + ADR-0012 : mémoire cross-session via log causal + Message::SessionResume.
+[[bin]]
+name = "cross-session-runner"
+path = "src/bin/cross_session_runner.rs"
+
+# K — P5 déterminisme : deux instances identiques + LogicalClock → action_ids bit-à-bit identiques.
+[[bin]]
+name = "determinism-runner"
+path = "src/bin/determinism_runner.rs"
+
+# L — C1 borne d'inférence : 3 agents, pool_cap=2 → file prioritaire sans perte ni deadlock.
+[[bin]]
+name = "bounded-infer-runner"
+path = "src/bin/bounded_infer_runner.rs"
+
+# M — délégation hiérarchique : Manager → [Sec, Perf] → Synth, fan-in DAG 3 niveaux.
+[[bin]]
+name = "hierarchy-runner"
+path = "src/bin/hierarchy_runner.rs"
+
+# N — watchdog trap : agent boucle infinie → AgentCrash(WatchdogTrap 0x03) + rapport superviseur.
+[[bin]]
+name = "watchdog-runner"
+path = "src/bin/watchdog_runner.rs"
+
+# O — log comme bus partagé : A+B parallèles → runner lit log → monitor fan-in causal.
+[[bin]]
+name = "observer-runner"
+path = "src/bin/observer_runner.rs"
+
+# P — rollback + causalité orpheline : B dépend de action_A → rollback A → B toujours lié à action_A.
+[[bin]]
+name = "orphan-causality-runner"
+path = "src/bin/orphan_causality_runner.rs"
+
+# demo-tui (lot 1) — démonstrateur TUI live : pipeline reviewer→judge en mode rejeu,
+# DAG causal rendu en temps réel depuis le log. Build : --features demo-tui.
+[[bin]]
+name = "demo-tui"
+path = "src/bin/demo_tui.rs"
+required-features = ["demo-tui"]
+
+# Vérificateur d'intégrité TIERS du log causal (scénario « moins téléphoné »).
+# Rouvre le log à froid (process distinct de l'écrivain) et recalcule clé == SHA256(valeur).
+# Exit 0 = intègre, 1 = violation détectée, 2 = erreur I/O. Aucune feature requise.
+[[bin]]
+name = "log-verify"
+path = "src/bin/log_verify.rs"
+
+# Outil de corruption (l'« attaquant ») : binaire DISTINCT de log-verify pour que la
+# séparation juge ≠ partie soit visible jusque dans le Cargo.toml. Mute une valeur sous
+# clé inchangée (couche logique). Compile uniquement avec --features demo-tamper.
+[[bin]]
+name = "log-tamper"
+path = "src/bin/log_tamper.rs"
+required-features = ["demo-tamper"]
