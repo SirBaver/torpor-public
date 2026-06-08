@@ -1712,7 +1712,7 @@ C.3 avait déjà établi que 16 MB épuise les 4096 slots du CNode initial seL4.
 
 **Règle générale :** Un jalon de faisabilité prouve qu'une brique *peut* fonctionner ; il n'instancie pas la topologie d'architecture cible et ne doit jamais servir de template d'implémentation. Avant de réutiliser le câblage d'un PoC de faisabilité, vérifier l'**invariant autoritaire** de l'ADR concerné (ici : le store durable est le journal content-addressed, l'index est reconstructible et non-autoritaire — ADR-0038 §3). Une validation `PASS` n'atteste que de ce que le test mesure : « la brique tourne » ≠ « la propriété système est tenue ». Une propriété d'atomicité-sous-crash sans un seul test injectant un crash est une intention, pas une propriété.
 
-**Référence :** `poc/sel4-hello/c5-redb-on-virtio/src/main.rs` L194-211 (câblage store-direct, à NE PAS reprendre en C.6). ADR-0042 §Amendement (2026-05-29). ADR-0038 §3 (invariant index), §Q3-C (atomicité content-addressed). ADR-0027 (no-force vs force-at-commit). CLAUDE.md §Conformité aux ADR.
+**Référence :** `poc/sel4-hello/c5-redb-on-virtio/src/main.rs` L194-211 (câblage store-direct, à NE PAS reprendre en C.6). ADR-0042 §Amendement (2026-05-29). ADR-0038 §3 (invariant index), §Q3-C (atomicité content-addressed). ADR-0027 (no-force vs force-at-commit).
 
 ---
 
@@ -2427,7 +2427,7 @@ Tentative de correction : réarmer l'epoch après `agent_infer` (A6 d'ADR-0025) 
 
 **Code adapte :** use case -- VERDICT.md crees pour S16, S17, S19, S28, S31, S32 (2026-06-03). FINDING-*.md corriges (references de chemins, claims de runs). Un correctif B-2 (bounds check inconsistant agent_check_cap + agent_add_cause) applique dans poc/runtime/src/actor.rs (checked_add remplace ptr+len).
 
-**Reference :** red-team/campagne-A-proprietes/FINDING-*.md, poc/scenarios/S16..S32/VERDICT.md, wiki/03-red-team.md (regle oracle).
+**Reference :** red-team/campagne-A-proprietes/FINDING-*.md, poc/scenarios/S16..S32/VERDICT.md (regle oracle).
 
 ---
 
@@ -2541,7 +2541,7 @@ Tentative de correction : réarmer l'epoch après `agent_infer` (A6 d'ADR-0025) 
 
 **Contexte :** revue securite (finding C1). `agent_store_get`/`agent_store_put` etaient gardes par une capability (`check` + `scope_covers`), mais le `kv_store` derriere etait un `HashMap` champ de `AgentState` -- donc PRIVE a chaque agent. Le test `inv_mt1_a` « passait » et etait presente comme validant P4 (isolation non-ambiante par capabilities).
 
-**Observation :** si le referent garde par une capability n est atteignable par AUCUN autre principal (store prive-par-agent), alors la capability ne ferme aucune porte reellement ouverte -- il n y a rien a isoler. P4 devient vrai *vacuously* (pour la mauvaise raison). Le test `inv_mt1_a` mesurait en realite l isolation de la TABLE de capabilities (un `cap_id` de T1 non resoluble depuis T2), pas l isolation d un referent partage : un faux positif d invariant. C est le pendant cote propriete-de-securite de la regle CLAUDE.md « valider une plomberie qui inverse/n exerce pas un invariant n est pas une validation ». Le test vert donnait une fausse assurance.
+**Observation :** si le referent garde par une capability n est atteignable par AUCUN autre principal (store prive-par-agent), alors la capability ne ferme aucune porte reellement ouverte -- il n y a rien a isoler. P4 devient vrai *vacuously* (pour la mauvaise raison). Le test `inv_mt1_a` mesurait en realite l isolation de la TABLE de capabilities (un `cap_id` de T1 non resoluble depuis T2), pas l isolation d un referent partage : un faux positif d invariant. C est le pendant cote propriete-de-securite de la regle « valider une plomberie qui inverse/n exerce pas un invariant n est pas une validation ». Le test vert donnait une fausse assurance.
 
 **Regle generale :** avant de declarer qu un controle d acces (capability, ACL) valide une propriete d isolation, verifier que son REFERENT est reellement partageable -- i.e. qu il existe un chemin par lequel un autre principal POURRAIT y acceder sans le controle. Sinon le controle est decoratif et le test d isolation prouve autre chose que ce qu il annonce. Corollaire de conception : un store garde par capability doit etre partage a la granularite de l autorite (ici : par tenant, `Arc<Mutex<…>>`), pas prive-par-instance. Corollaire de test : un test d isolation doit exhiber le cas POSITIF (un principal autorise atteint le referent ecrit par un autre) en plus du cas negatif (refus), sinon il ne distingue pas « refuse par le controle » de « inaccessible par construction ».
 

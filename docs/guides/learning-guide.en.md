@@ -1001,7 +1001,7 @@ Honesty about what is achieved and what is not is a core value of the project.
 | The formal definition of the properties | `spec/02-properties.md` |
 | The full, nuanced glossary | `spec/06-glossary.md` |
 | The executive summary | `OVERVIEW.md` |
-| The condensed technical view | `wiki/01-README-technique.md` |
+| The condensed technical view | `README.md` |
 | All architecture decisions | `decisions/INDEX.md` (56 ADRs) |
 | The empirical lessons | `lab/LESSONS.md` (L1–L119) |
 | Project status and debts | `TODO.md` |

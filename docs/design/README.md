@@ -8,7 +8,7 @@ RFC, propositions encore réfutables. Il complète `decisions/` sans s'y substit
 | | `decisions/` (ADR) | `docs/design/` (RFC) |
 |---|---|---|
 | **Statut** | Tranché | En exploration |
-| **Engagement** | **Contraignant** tant que non amendé/remplacé (cf. CLAUDE.md §Conformité aux ADR) | **Aucun** — réfutable, abandonnable |
+| **Engagement** | **Contraignant** tant que non amendé/remplacé (principe de conformité aux ADR) | **Aucun** — réfutable, abandonnable |
 | **Question** | « Voici ce qu'on fait, et pourquoi » | « Voici un problème ouvert et des pistes » |
 | **Cycle de vie** | Acceptée → amendée → remplacée | DRAFT → (promu en ADR \| rejeté \| abandonné) |
 

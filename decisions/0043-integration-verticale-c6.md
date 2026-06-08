@@ -148,7 +148,7 @@ Validité bornée de P6-C.6. Le test crash de C.6 valide P6 **UNIQUEMENT** dans 
 - decisions/0037-stack-runtime-sel4.md (§3 executor async maison, repoussé C.7)
 - decisions/0041-voie-b2-driver-block.md (driver virtio-blk C.4)
 - lab/LESSONS.md (L68 : jalon de faisabilité ≠ topologie d'architecture)
-- CLAUDE.md (§Conformité aux ADR)
+- Principe de conformité aux ADR : un ADR est contraignant tant que non amendé/remplacé
 - rust-sel4 rev 7a2321f2 : crates/examples/root-task/spawn-task/ (spawn process VSpace séparé), spawn-thread/ (tcb_suspend, tcb_configure), example-root-task/ (badge/mint/wait)
 - seL4 Reference Manual v15.0.0 §5 (IPC), §6 (MessageInfo), §10 (objets VSpace/Frame)
 

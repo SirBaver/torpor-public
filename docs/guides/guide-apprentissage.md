@@ -1078,7 +1078,7 @@ projet.
 | La définition formelle des propriétés | `spec/02-properties.md` |
 | Le glossaire complet et nuancé | `spec/06-glossary.md` |
 | Le résumé exécutif (en anglais) | `OVERVIEW.md` |
-| La vue technique condensée | `wiki/01-README-technique.md` |
+| La vue technique condensée | `README.md` |
 | Toutes les décisions d'architecture | `decisions/INDEX.md` (56 ADR) |
 | Les leçons empiriques | `lab/LESSONS.md` (L1–L119) |
 | L'état d'avancement et les dettes | `TODO.md` |

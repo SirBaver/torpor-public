@@ -21,7 +21,7 @@ La revue sécurité a relevé deux écarts couplés sur le modèle d'autorité d
   mauvaise raison** : il n'y avait aucun accès réellement ouvert à fermer. Le test `inv_mt1_a`
   validait l'isolation de la *table de capabilities* (un `cap_id` de T1 non résoluble depuis T2),
   pas l'isolation d'un référent. Valider une plomberie qui n'exerce pas l'invariant qu'elle
-  prétend valider est proscrit (CLAUDE.md).
+  prétend valider est proscrit.
 
 - **M1 — isolation par convention, pas par invariant.** `CapabilityStore::check` ne connaît que
   `owner` + `scope_covers`, sans `TenantId` (ADR-0057 §D2 : le tenant n'entre pas dans les clés).

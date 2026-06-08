@@ -212,7 +212,7 @@ Les Routers des familles 5/6 et la primitive `spawn` (famille 4) ne sont pas liv
 d'effet, exercé par un **vrai cycle WASM** (`process_one` du target). On teste la frontière réelle —
 la garde `tenant_of` du driver — pas le chemin guest `agent_add_cause` (que le driver n'emprunte pas,
 D3). Tester `-3 via agent_add_cause` ici serait un faux positif structurel (valider une plomberie
-hors du chemin du driver, ce que CLAUDE.md interdit). Setup : deux agents A∈T1 et B∈T2, log/store
+hors du chemin du driver, ce que le principe de conformité aux ADR interdit). Setup : deux agents A∈T1 et B∈T2, log/store
 partagés. Trois conditions **toutes obligatoires** (sans (a) l'oracle est vide — un no-op total le
 passerait) :
 
