@@ -146,7 +146,7 @@ QUICKSTART.md      Comment faire tourner le PoC
 spec/              Design document (10 fichiers, P1–P6, plafonds C1–C3)
 decisions/         ADR-0001–0053 + b3-storage-research.md
 agents/sel4.md     Référence technique seL4/rust-sel4 (citée par poc/sel4-hello)
-poc/               Substrat cible Rust/Wasmtime/RocksDB
+poc/               PoC Linux (Rust/Wasmtime/RocksDB, mesuré) + stack seL4 cible (Wasmtime no_std/redb)
   README.md        Doc technique du PoC (modules, ABI, scénarios)
   scenarios/       S1–S14 + SEF-8/9/10 + harness run-all.sh
   agent-sdk/       Crate Rust→WASM

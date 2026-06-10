@@ -1,6 +1,6 @@
-# PoC — Substrat cible
+# PoC — Substrats
 
-Implémentation Rust/Wasmtime/RocksDB. État : **PoC E2E complet** (2026-05-16) — 53 tests verts, 4/4 scénarios pass, ADR-0001–0025 mergés.
+Deux stacks cohabitent ici : le **PoC Linux** (Rust/Wasmtime/RocksDB — c'est lui qui porte toutes les mesures publiées) et la **stack seL4 cible** (Wasmtime no_std/redb, sous-arbres `sel4-hello/`, `redb-fork/`, `redb-p3a/` — fonctionnelle sur QEMU, latences non mesurées, ADR-0042/0046). RocksDB ne tourne pas sur seL4 (C++, incompatible no_std) : le moteur d'index de la cible est redb. État PoC Linux : **E2E complet** (2026-05-16) — 53 tests verts, 4/4 scénarios pass, ADR-0001–0025 mergés.
 
 > **Périmètre du QUICKSTART.** Le `cargo build --workspace` ne couvre que la stack Linux (`store`, `causal-log`, `runtime`, `capabilities`, `benchmarks`, `reconstruct`, `agent-sdk`, `sel4-smoke`, `scenarios`). Les sous-arbres **`sel4-hello/`, `redb-fork/` et `redb-p3a/`** exigent la toolchain seL4/AArch64 (cross-compilation, QEMU `virt`, rust-sel4) : ils **ne se construisent pas** via le QUICKSTART et ne font pas partie du workspace cargo. Ce sont les artefacts des jalons C.1→C.11-prov, fournis pour inspection et reproductibilité hardware-gated, pas pour un build immédiat.
 
