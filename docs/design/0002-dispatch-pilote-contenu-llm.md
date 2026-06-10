@@ -296,7 +296,7 @@ paramétré, le test P-dispatch. **Non prototypable / recherche-ouvert :** (c).
 Prototype réalisé sur `feat/famille-4-rfc`, en deux incréments. Branche partie de `main` (sans les
 reliquats fleet) ; périmètre cœur `poc/runtime/src/fleet/` + helper guest `poc/agent-sdk`.
 
-**Incrément 8a — mécanisme (commit `15710e3`).** `Route::Spawn`, `MemberFactory` (le runner ferme le
+**Incrément 8a — mécanisme (commit `f47a3b6`).** `Route::Spawn`, `MemberFactory` (le runner ferme le
 « quoi spawner », le driver n'exécute qu'un index), `RouteDirective`/`DirectiveKind` (format binaire
 **manuel**, voir ci-dessous), `DispatchRouter`, `FleetEvent::Emit` doté d'un `CauseRef`. Tests :
 décodage fail-closed (TA-2), routage pur (TA-2), **spawn réel via fabrique + 4 gardes** (cause forgée
