@@ -39,6 +39,14 @@ Les workloads sont définis de manière à être **reproductibles** : toute équ
 
 **`idle_fraction` : paramètre clé de H-densité.** L'avantage Wasmtime se manifeste intégralement à `idle_fraction = 1,0` (agents dormants, 5 KB vs 37–42 MB Docker Python) et s'atténue à `idle_fraction = 0` (agents constamment actifs, coûts qui convergent). Le rapport de densité Wasmtime/Docker varie selon ce paramètre. Pour une comparaison honnête, `idle_fraction` doit être justifié par des mesures d'usage réel (profil d'un agent LLM en production : attente LLM ~2–18s, traitement ~0,1s → `idle_fraction` ≈ 0,90–0,99).
 
+**Statut du paramètre « État long-terme par agent » (50 MB) — clarification revue externe §6.4 (2026-06-10) :** c'est un **objectif de design** (hypothèse de modélisation du profil B), pas une mesure. Aucun corpus d'agents réels n'existe pour le mesurer ; aucun scénario ne l'a exercé en bout-en-bout (S10 lit une entrée ContentStore, pas 50 MB ; le calibrage evict/wake est FutureWork, ADR-0030).
+
+**Conséquence sur le cap actif C2.** Dans `cap_actif = floor(BW_NVMe / 50 MB)`, la bande passante est **mesurée** (T5, 741 MB/s) et seul le numérateur d'état est hypothétique : le cap actif ne porte donc **qu'une** variable non mesurée, pas deux. (La crainte « deux hypothèses empilées » de la revue visait l'arithmétique serveur PCIe Gen4, abandonnée le 2026-05-27 — cf. `spec/07 §3`.) Le « 14 agents/s » est **conditionnel à l'hypothèse de 50 MB** et décroît en `1/état` : un état réel plus grand abaisse le cap, un état plus petit le relève. À titre purement illustratif et non mesuré, un état de 100 MB ramènerait le calcul à ~7 agents/s.
+
+**Atténuations.** (i) `cap_actif` est un **paramètre de configuration recalibrable** (ADR-0030), non une constante compilée : une mesure future ajuste le paramètre sans toucher au design. (ii) Le coût agrégé réel est **borné supérieurement** par `50 MB × N` — le partage de templates via le Merkle DAG le réduit quand les agents partagent un état de base.
+
+**Communication.** Toute publication du cap doit porter la réserve « conditionnel à l'hypothèse 50 MB/agent ».
+
 **Régimes de mesure pour P1 (densité) :**
 
 | Régime | Définition | Ce qui est mesuré |

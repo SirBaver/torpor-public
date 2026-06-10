@@ -7,7 +7,7 @@
 **Périmètre.** Traduire en anglais le **dépôt public seulement** (`../os-public`, curé). Le repo de travail `os/` reste en français, intact — jamais touché. Le dépôt anglais est un **livrable de publication figé** (photo à un instant t), pas un miroir vivant : à resynchroniser après chaque régénération de `os-public`.
 
 **Décisions de lancement** (tranchées 2026-06-09) :
-- [ ] Périmètre : **différé au Palier 4** — prose Markdown seule pour Paliers 1-3 *(reco retenue)* ; sort des commentaires `.rs` à décider en fin de chantier.
+- [x] Périmètre : **différé au Palier 4** — prose Markdown seule pour Paliers 1-3 *(reco retenue)* ; sort des commentaires `.rs` **tranché au Palier 4 : traduits** (commit `5a7c493`, 2026-06-10).
 - [x] Structure : dépôt **anglais pur** tiré de `os-public`.
 - [x] Dépôt cible : `../os-public-en`, git neuf (commit `f81cc2d`), licences Apache + CC-BY reprises.
 

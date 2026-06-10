@@ -148,7 +148,7 @@ arithmétique ≈ floor(5 000 MB/s / 50 MB) = 100 agents/s
 
 Ce chiffre est **hypothétique et abandonné comme objectif de qualification** (décision architect 2026-05-27). Il n'est conservé qu'à titre d'illustration de la sensibilité du cap à la bande passante. Le protocole §3.1 interdit en tout état de cause de le publier comme mesuré ; il ne doit pas non plus être présenté comme un plafond planifié.
 
-> **Question ouverte (revue externe §6.4) :** le « 50 MB / agent » (état W1) est-il mesuré ou un objectif de design ? Si c'est un target, C2 a deux variables hypothétiques empilées. À clarifier dans `reference-workload.md §W1` (statut du paramètre « État long-terme par agent »).
+> **Question ouverte (revue externe §6.4) — clôturée (2026-06-10) :** le « 50 MB/agent » est un **objectif de design** (non mesuré, non exercé en bout-en-bout) ; le cap actif C2 ne porte qu'une variable hypothétique (l'état ; la bande passante est mesurée T5). Statut détaillé et réserve de communication : `benchmarks/reference-workload.md §W1`.
 
 Les requêtes en attente dans la queue sont ordonnées selon trois critères :
 
