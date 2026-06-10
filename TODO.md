@@ -2,6 +2,17 @@
 
 ---
 
+## Exposition & confrontation au réel (ouvert 2026-06-10)
+
+Revue stratégique sur pièces. Constat central : le cycle constructif est terminé ; la valeur restante est hors-code (publier, trancher, écrire) ou use-case (agent vivant).
+
+- [ ] **Copyright + remotes + push des 3 dépôts** (`os/`, `os-public`, `os-public-en`) — *action utilisateur* (création des dépôts distants + confirmation du nom d'attribution). Risque actuel : tout vit sur un seul NVMe.
+- [ ] **Position seL4 — jalon futur (A) vs réserves permanentes (B)** `→ architect` — **ne pas instruire avant trigger** : publication effective d'os-public OU première question externe sur la transférabilité. Les bornes chiffrées sont toutes conditionnelles au « prototype de stockage seL4-natif » qu'aucun trigger ADR-0049 ne planifie.
+- [ ] **Agent vivant — mission réelle, run de jours, données non synthétiques** — périmètre **use case** pur (ABI hôte sans I/O externe : le réel entre par un runner). Convertirait 3 hypothèses du profil B en mesures : état long-terme (vs 50 MB target, §6.4), `idle_fraction` (vs 0,50), cycle (vs 5 s). Protocole de mesure `→ architect` avant lancement.
+- [ ] **Article court (workshop/long-form)** — compression d'un matériau existant (OVERVIEW EN, signature 3 M/70, méthode falsifiable). Après publication ; force la décision seL4 ci-dessus.
+
+---
+
 ## Chantier — Traduction dépôt public anglais (ouvert 2026-06-08)
 
 **Périmètre.** Traduire en anglais le **dépôt public seulement** (`../os-public`, curé). Le repo de travail `os/` reste en français, intact — jamais touché. Le dépôt anglais est un **livrable de publication figé** (photo à un instant t), pas un miroir vivant : à resynchroniser après chaque régénération de `os-public`.
