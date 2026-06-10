@@ -2,6 +2,47 @@
 
 ---
 
+## Chantier — Traduction dépôt public anglais (ouvert 2026-06-08)
+
+**Périmètre.** Traduire en anglais le **dépôt public seulement** (`../os-public`, curé). Le repo de travail `os/` reste en français, intact — jamais touché. Le dépôt anglais est un **livrable de publication figé** (photo à un instant t), pas un miroir vivant : à resynchroniser après chaque régénération de `os-public`.
+
+**Décisions de lancement** (tranchées 2026-06-09) :
+- [ ] Périmètre : **différé au Palier 4** — prose Markdown seule pour Paliers 1-3 *(reco retenue)* ; sort des commentaires `.rs` à décider en fin de chantier.
+- [x] Structure : dépôt **anglais pur** tiré de `os-public`.
+- [x] Dépôt cible : `../os-public-en`, git neuf (commit `f81cc2d`), licences Apache + CC-BY reprises.
+
+**Volume** : ~343 k mots Markdown (≈ 980 pages). `decisions/` = 114 k (le gros). Déjà EN : `OVERVIEW.md`, `learning-guide.en.md`.
+
+### Palier 0 — Fondation terminologique (BLOQUANT) ✅ terminé 2026-06-09
+- [x] Créer `../os-public-en` depuis `os-public` (copie + `git init`). Commit `f81cc2d`, 661 fichiers.
+- [x] Produire `TERMBASE.md` (`os-public-en/TERMBASE.md`) : DO-NOT-TRANSLATE + termes ancrés sur OVERVIEW + termes porteurs.
+- [x] **GATE revue utilisateur** tranché : *mise à l'épreuve*→**adversarial testing** ; *survendre/sur-garantir*→**over-claim** ; *densité hébergée/active*→**at-rest/active density** ; *garde-fou*→split **guardrail** (épistémique) / **safeguard** (technique). Autres ancrés : substrat→substrate, régime→regime, dette→debt, plafond architectural→architectural ceiling, frontière LLM→LLM boundary, dormant→dormant.
+
+### Palier 1 — Façade (valeur publique max) ✅ terminé 2026-06-09
+- [x] `README.md`, `QUICKSTART.md` (commit `b0ce06e`)
+- [x] `spec/` (13 fichiers : 01-vision → 10-durabilité, dont 02b/02c) — commits `2e03e04`→`0bf93e0`
+- [x] `OVERVIEW.md` (déjà EN) confirmé comme ancre du termbase
+- [x] Identifiants `H-*` normalisés EN (convention dans TERMBASE.md §2) ; noms de fichiers FR gardés verbatim
+- [x] Sweep intégrité des liens + commit (tous résolvent, français résiduel balayé)
+
+### Palier 2 — Lab + décisions (le gros morceau) ✓ (2026-06-09)
+- [x] `lab/LESSONS.md` (133 leçons) + `lab/` (README, REVIEW, TRACE)
+- [x] `decisions/` (65 fichiers + `INDEX.md`)
+- [x] Sweep liens + commit (commits Palier 2 dans os-public-en)
+
+### Palier 3 — Reste de la prose ✓ (2026-06-09)
+- [x] `TODO.md` (844 l, traduit en 3 tranches /tmp), `poc/*.md`, `red-team/`, `benchmarks/`, `results/`, `docs/` (guides, design RFC-0001/0002, demo, onboarding, use-cases, archive briefings), `agents/sel4.md`, `references/biblio.md`, `lab/experiments/` (E01-E03+README)
+- [x] Couple guide FR/EN tranché : FR `guide-apprentissage.md` supprimé (`git rm`), `learning-guide.en.md` = LE guide, tous renvois redirigés
+- [x] Sweep liens (**0 cassé**, fix `0047-w-x`→`-wx`) + sweep résidu FR (seul reste voulu = colonne source TERMBASE) + commits Palier 3
+- [x] Procédure resync EN↔FR documentée (`os-public-en/docs/TRANSLATION-SYNC.md`)
+
+### Palier 4 — Optionnel — commentaires de code
+- [x] Commentaires français des 177 `.rs` (72 k lignes) — 241 fichiers `.rs`/`.sh`/`.py`/`.wat` traduits, commit `5a7c493` (2026-06-10)
+
+**Règles transverses (toute la traduction).** Préserver : blocs de code, identifiants, chemins, numéros d'ADR, noms de propriétés (`P1a`…), labels régime `R1/R2`, dates. Traduire **fidèlement** les garde-fous épistémiques (jamais survendre — F1/L68) et les réserves d'honnêteté (mesuré vs abandonné/non-transférable) ; ne pas « lisser » une nuance prudente. Après chaque palier : sweep d'intégrité des références + commit, puis documenter la procédure de resynchronisation EN↔FR.
+
+---
+
 ## Chantier multi-tenant + B-fort (ouvert 2026-06-07)
 
 **PoC d'apprentissage assumé** (décision utilisateur — aucun besoin métier). But avoué :
