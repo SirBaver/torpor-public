@@ -103,6 +103,192 @@ mod tests {
         assert!(module_32.is_ok(), "mémoire 32 bits doit rester chargeable");
     }
 
+    /// Le backend Winch ne doit jamais être compilé ni sélectionnable. Quatre advisories
+    /// wasmtime 25.0.3 visent exclusivement Winch (FINDING-B-1 : RUSTSEC-2026-0095,
+    /// CVSS 9.0, sandbox escape ; -0089 `table.fill` ; -0094 `table.grow` ; -0086 fuite
+    /// 64-bit tables). Le projet compile Cranelift seul — `wasmtime = "25"` avec les
+    /// features par défaut, dont `winch` ne fait pas partie (`cargo tree -i wasmtime-winch`
+    /// → absent du graphe de build) — ce qui rend la classe **N/A par configuration**.
+    ///
+    /// Fail-closed : sans la feature `winch`, `Engine::new` échoue sur
+    /// `Config::strategy(Strategy::Winch)` avec « winch support not compiled in »
+    /// (wasmtime-25.0.3 src/config.rs, `build_compiler`). Si un futur changement ajoute la
+    /// feature `winch` au Cargo.toml, cet Engine se construit et ce test échoue — signal de
+    /// rouvrir le triage FINDING-B-1 (RUSTSEC-2026-0095 redevient atteignable) et la dette
+    /// upgrade wasmtime (B-1 / ADR-0049 dormants).
+    #[test]
+    fn winch_reste_non_compile() {
+        use wasmtime::{Config, Strategy};
+
+        let mut cfg = Config::new();
+        cfg.strategy(Strategy::Winch);
+        let err = match Engine::new(&cfg) {
+            Err(e) => format!("{e:#}"),
+            Ok(_) => panic!(
+                "un Engine Winch s'est construit — la feature `winch` a été compilée : \
+                 rouvrir FINDING-B-1 (RUSTSEC-2026-0095, sandbox escape CVSS 9.0) et la \
+                 dette upgrade wasmtime (ADR-0049 dormants)."
+            ),
+        };
+        assert!(
+            err.contains("winch"),
+            "l'échec doit venir de l'absence du backend winch, obtenu : {err}"
+        );
+        // Sanity : Cranelift explicite, lui, reste constructible.
+        let mut cfg = Config::new();
+        cfg.strategy(Strategy::Cranelift);
+        assert!(Engine::new(&cfg).is_ok(), "Cranelift doit rester le backend disponible");
+    }
+
+    /// Le component model ne doit pas entrer dans le périmètre du runtime. Quatre advisories
+    /// wasmtime 25.0.3 visent exclusivement ses chemins de code (FINDING-B-1 :
+    /// RUSTSEC-2026-0091 OOB write transcoding, -0092 panic UTF-16, -0093 heap OOB read,
+    /// -0085 panic lifting `flags`) ; **N/A par configuration** parce que le runtime
+    /// n'instancie jamais de composant : `Module` core + `Linker` uniquement, via les seuls
+    /// points d'entrée `Module::new` / `load_module_from_file`.
+    ///
+    /// Garde en deux volets — honnêteté : il n'existe pas de garde runtime parfaite, l'API
+    /// composant de wasmtime est un chemin de code séparé qu'aucun test du chemin `Module`
+    /// ne peut sonder.
+    /// 1. **Chemin d'ingestion** : un component (texte ou binaire) est rejeté par les points
+    ///    d'entrée du projet. Vérifié sur wasmtime 25.0.3 : ce rejet tient même si
+    ///    `Config::wasm_component_model(true)` était activé (`Module` est core-only). Ce
+    ///    volet verrouille « aucun composant n'entre par les points d'entrée », pas le flag.
+    /// 2. **Détecteur d'érosion statique** : aucun fichier de `runtime/src/` ne référence
+    ///    l'API composant. C'est ce volet qui échoue si quelqu'un la branche (nouvel
+    ///    `use`/appel) — signal de rouvrir le triage FINDING-B-1 (les 4 RUSTSEC ci-dessus
+    ///    redeviennent atteignables) et la dette upgrade wasmtime (B-1 / ADR-0049 dormants).
+    #[test]
+    fn component_model_reste_hors_perimetre() {
+        use super::load_module_from_file;
+
+        let engine = crate::make_engine();
+
+        // Volet 1a — WAT component via Module::new (le chemin d'ActorInstance::new).
+        let err = match Module::new(&engine, "(component)") {
+            Err(e) => format!("{e:#}"),
+            Ok(_) => panic!(
+                "un composant WASM s'est chargé via Module::new — le component model est \
+                 entré dans le périmètre : rouvrir FINDING-B-1 \
+                 (RUSTSEC-2026-0091/-0092/-0093/-0085) et la dette upgrade wasmtime \
+                 (ADR-0049 dormants)."
+            ),
+        };
+        assert!(
+            err.contains("WebAssembly component"),
+            "le rejet doit être motivé par l'encodage component, obtenu : {err}"
+        );
+
+        // Volet 1b — header binaire component (\0asm, version 13, layer 1) rejeté aussi.
+        let comp_bin: &[u8] = &[0x00, 0x61, 0x73, 0x6d, 0x0d, 0x00, 0x01, 0x00];
+        assert!(
+            Module::new(&engine, comp_bin).is_err(),
+            "un binaire component ne doit pas se charger via Module::new"
+        );
+
+        // Volet 1c — l'unique point d'entrée fichier du projet rejette aussi un component.
+        let dir = TempDir::new().unwrap();
+        let path = dir.path().join("composant.wat");
+        std::fs::write(&path, "(component)").unwrap();
+        assert!(
+            load_module_from_file(&engine, &path).is_err(),
+            "load_module_from_file ne doit pas charger un composant"
+        );
+
+        // Sanity : un module core, lui, reste chargeable.
+        assert!(
+            Module::new(&engine, super::actor::AGENT_WAT).is_ok(),
+            "module core doit rester chargeable"
+        );
+
+        // Volet 2 — détecteur d'érosion : aucun usage de l'API composant dans runtime/src/.
+        // Needles construites par concaténation à l'exécution pour ne pas s'auto-matcher.
+        let needles = [
+            format!("wasmtime::{}", "component"),
+            format!("{}::Component", "component"),
+        ];
+        fn scan(dir: &std::path::Path, needles: &[String], hits: &mut Vec<String>) {
+            for entry in std::fs::read_dir(dir).unwrap() {
+                let path = entry.unwrap().path();
+                if path.is_dir() {
+                    scan(&path, needles, hits);
+                } else if path.extension().is_some_and(|e| e == "rs") {
+                    let src = std::fs::read_to_string(&path).unwrap();
+                    for n in needles {
+                        if src.contains(n.as_str()) {
+                            hits.push(format!("{} → `{}`", path.display(), n));
+                        }
+                    }
+                }
+            }
+        }
+        let src_dir = std::path::Path::new(env!("CARGO_MANIFEST_DIR")).join("src");
+        let mut hits = Vec::new();
+        scan(&src_dir, &needles, &mut hits);
+        assert!(
+            hits.is_empty(),
+            "API composant wasmtime référencée dans runtime/src — les RUSTSEC component \
+             model de FINDING-B-1 (-0091/-0092/-0093/-0085) ne sont plus N/A par config : \
+             {hits:?}"
+        );
+    }
+
+    /// Aucun import WASI ne doit être exposé aux guests par le Linker du runtime. Deux
+    /// advisories wasmtime 25.0.3 passent par les chemins WASI du crate core (FINDING-B-1 :
+    /// RUSTSEC-2025-0046 panic `fd_renumber`, RUSTSEC-2026-0020 épuisement de ressources)
+    /// et restent listés par `cargo audit` ; **N/A par configuration** parce que l'unique
+    /// Linker du runtime (actor.rs, `build_instance_inner_with_profile_and_clock`) ne
+    /// définit que des host functions custom sous le namespace `env` — un guest ne peut
+    /// joindre aucun chemin WASI. (Le crate `wasmtime-wasi` lui-même a été retiré du
+    /// Cargo.toml : FINDING-B-1b / RUSTSEC-2026-0149.)
+    ///
+    /// Fail-closed : ce test passe par le VRAI Linker du projet (ActorInstance, pas un
+    /// Linker neuf) avec un module sonde qui importe `wasi_snapshot_preview1::fd_write`
+    /// (signature preview1 exacte, pour qu'un éventuel WASI branché la résolve vraiment).
+    /// Aujourd'hui l'instanciation échoue (« unknown import ») ; si quelqu'un branche WASI
+    /// sur le linker (ex. `add_to_linker` de wasmtime-wasi), l'import se résout, l'acteur
+    /// se construit, et ce test échoue — signal de rouvrir le triage FINDING-B-1
+    /// (RUSTSEC-2025-0046 / RUSTSEC-2026-0020 redeviennent atteignables) et la dette
+    /// upgrade wasmtime (B-1 / ADR-0049 dormants).
+    #[tokio::test(flavor = "current_thread")]
+    async fn linker_reste_sans_wasi() {
+        let (engine, store, log, _dir) = setup();
+
+        // Sonde : satisfait les exports attendus par ActorInstance (memory + process(i32,i32)),
+        // importe une host function `env` réelle (preuve qu'on est sur le bon linker) ET une
+        // fonction WASI preview1. L'import suffit : pas besoin de l'appeler pour que
+        // l'instanciation exige sa définition.
+        const WASI_PROBE_WAT: &str = r#"(module
+          (import "env" "commit_barrier" (func $cb))
+          (import "wasi_snapshot_preview1" "fd_write"
+            (func $fd_write (param i32 i32 i32 i32) (result i32)))
+          (memory (export "memory") 1)
+          (func (export "process") (param i32 i32))
+        )"#;
+        let module = Module::new(&engine, WASI_PROBE_WAT).expect("WAT sonde valide");
+
+        let res = ActorInstance::new_precompiled(
+            &engine, &module, [0xC1u8; 16], store.clone(), log.clone(),
+        ).await;
+        let err = match res {
+            Err(e) => e.to_string(),
+            Ok(_) => panic!(
+                "un module important wasi_snapshot_preview1 s'est instancié sur le linker \
+                 du runtime — du WASI a été branché : rouvrir FINDING-B-1 \
+                 (RUSTSEC-2025-0046 / RUSTSEC-2026-0020) et la dette upgrade wasmtime \
+                 (ADR-0049 dormants)."
+            ),
+        };
+        assert!(
+            err.contains("wasi_snapshot_preview1"),
+            "l'échec doit venir de l'import WASI non défini, obtenu : {err}"
+        );
+
+        // Sanity : le même chemin (vrai linker), sans import WASI, instancie normalement.
+        let ok = ActorInstance::new(&engine, [0xC2u8; 16], store, log).await;
+        assert!(ok.is_ok(), "un module sans import WASI doit rester instanciable");
+    }
+
     // ── Tests B1 — chargement module WASM depuis disque ──────────────────────────
 
     /// B1 — un module WAT écrit sur disque est chargé via Module::from_file et exécuté

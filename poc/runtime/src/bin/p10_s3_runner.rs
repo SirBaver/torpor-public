@@ -176,6 +176,7 @@ async fn main() {
 
     let cap_store = Arc::new(Mutex::new(CapabilityStore::new()));
     let mut senders = vec![];
+    let mut handles = vec![];
     let mut agent_ids: Vec<[u8; 16]> = vec![];
 
     eprintln!("[3/4] Spawn de {} workers...", args.n_workers);
@@ -194,7 +195,7 @@ async fn main() {
         ).await.expect("ActorInstance");
 
         let (tx, rx) = tokio::sync::mpsc::channel(4);
-        tokio::spawn(os_poc_runtime::actor::run_loop(actor, rx));
+        handles.push(tokio::spawn(os_poc_runtime::actor::run_loop(actor, rx)));
         tx.send(os_poc_runtime::actor::Message::data(vec![0x00])).await.unwrap();
         senders.push(tx);
     }
@@ -231,8 +232,14 @@ async fn main() {
     }
 
     let elapsed_ms = t_start.elapsed().as_millis() as u64;
+    // Shutdown ordonné : fermer les channels PUIS joindre les run_loops (le sleep
+    // 300 ms ne garantissait pas leur fin — les Arc<ContentStore>/Arc<CausalLog>
+    // restaient vivants au remove_dir_all, course RocksDB/process::exit, abort
+    // selon la glibc). Même principe que sef1/s12_runner.
     drop(senders);
-    tokio::time::sleep(Duration::from_millis(300)).await;
+    for h in handles {
+        let _ = h.await;
+    }
 
     // ── Évaluation des assertions ─────────────────────────────────────────────
 
@@ -327,6 +334,10 @@ async fn main() {
     eprintln!("  t_infer médiane  : {}ms  p99: {}ms", t_median, t_p99);
     eprintln!("  elapsed          : {}ms", elapsed_ms);
     eprintln!("rapport → {}", args.out_report);
+
+    // Fermer les DB avant de supprimer leurs fichiers (cf. commentaire shutdown plus haut).
+    drop(store);
+    drop(log);
 
     std::fs::remove_dir_all(&tmp_dir).ok();
     std::process::exit(if verdict == "PASS" { 0 } else { 1 });

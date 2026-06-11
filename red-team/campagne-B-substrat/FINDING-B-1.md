@@ -99,6 +99,16 @@ RUSTSEC-2026-0089 (`table.fill`), -0094 (`table.grow` masquage retour),
   ressources WASI.
 - RUSTSEC-2026-0088 (fuite inter-instances pooling allocator, low) : `wasmtime` core,
   non joignable — allocateur on-demand par defaut, pas de pooling allocator.
+- RUSTSEC-2026-0021 (panic par ajout excessif de champs `wasi:http/types.fields`,
+  medium) : attribue au crate `wasmtime` core, donc liste par l'audit, mais les chemins
+  `wasi:http` (component model + WASI) ne sont jamais branches → non joignable.
+  *(Addendum 2026-06-11 : advisory datee du 2026-02-24, presente au triage initial mais
+  non detaillee dans ce finding ; re-execution `cargo audit` du 2026-06-11 → 15
+  advisories, ensemble strictement identique au triage du 2026-06-03, aucune nouvelle.
+  Les invariants « N/A par configuration » sont desormais tous verrouilles fail-closed :
+  `memory64_reste_desactive`, `winch_reste_non_compile`,
+  `component_model_reste_hors_perimetre`, `linker_reste_sans_wasi` —
+  `poc/runtime/src/lib.rs`.)*
 
 ### Warnings (non-vulns)
 

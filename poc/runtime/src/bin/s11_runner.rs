@@ -268,6 +268,22 @@ async fn run(args: &Args) -> bool {
     });
     println!("{report}");
 
+    // Shutdown ordonné : joindre les run_loops (evict_agent) et dropper les Arcs
+    // store/log AVANT remove_dir_all — sinon suppression d'une RocksDB ouverte +
+    // process::exit() course les threads background C++ (abort selon la glibc).
+    // Même séquence que sef1_runner / s12_runner.
+    for id in &agents {
+        if scheduler.is_dormant(id) {
+            continue; // déjà évincé : sa run_loop a déjà été jointe par evict_agent
+        }
+        // Err = agent déjà terminé/reapé : rien à joindre, on ignore.
+        let _ = scheduler.evict_agent(id).await;
+    }
+    drop(senders);
+    drop(scheduler);
+    drop(store);
+    drop(log);
+
     let _ = std::fs::remove_dir_all(&args.db_root);
     pass
 }

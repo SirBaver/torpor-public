@@ -195,13 +195,27 @@ references/        Notes de lecture, bibliographie
 
 ---
 
+## Statut du dépôt et maintenance
+
+Ce dépôt est un **artefact de recherche**, pas un logiciel maintenu. La campagne de travail qui l'a produit est **close** : les phases ci-dessus sont terminées, les dettes restantes sont tracées dans `TODO.md` avec leurs déclencheurs dormants, et aucun développement actif n'est en cours.
+
+En conséquence :
+
+- **Issues** : lues avec intérêt — en particulier les erreurs factuelles dans la spec, les ADR ou les résultats — mais sans engagement de délai de réponse.
+- **Pull requests** : pas de processus de revue actif. Une PR corrigeant une erreur factuelle ou un défaut de reproductibilité du QUICKSTART a de bonnes chances d'être intégrée ; une PR ajoutant des fonctionnalités ne sera vraisemblablement pas mergée — le périmètre du PoC est volontairement gelé.
+- **Support** : aucun. Le QUICKSTART est testé tel quel ; au-delà, le dépôt se lit plus qu'il ne s'exécute.
+
+Les chiffres publiés (P1a, P2, P3a) caractérisent le hardware consumer documenté dans `spec/01-vision.md` §3.1 — ce ne sont pas des promesses de performance.
+
+---
+
 ## Licence
 
 Ce dépôt mélange du code et de la documentation, sous deux licences :
 
-- **Code** — tout `poc/` (Rust, WASM, scripts) : **Apache-2.0** (`LICENSE`). Réutilisation libre, y compris commerciale, avec attribution ; inclut une concession de brevet explicite.
+- **Code** — tout `poc/` (Rust, WASM, scripts) : **Apache-2.0** (`LICENSE`). Réutilisation libre, y compris commerciale, avec attribution ; inclut une concession de brevet explicite. *Exception : `poc/redb-fork/` est un fork de [redb 4.1.0](https://github.com/cberner/redb) (© Christopher Berner), distribué comme l'upstream sous **MIT OR Apache-2.0** — voir `poc/redb-fork/LICENSE-MIT`, `poc/redb-fork/LICENSE-APACHE` et `poc/redb-fork/README.md`.*
 - **Documentation et écrits** — `spec/`, `decisions/`, `lab/`, `docs/`, `benchmarks/`, `results/`, `red-team/`, `references/`, `agents/sel4.md`, `TODO.md` et les `*.md` à la racine : **Creative Commons CC-BY-4.0** (`LICENSE-DOCS`). Reproduction et adaptation libres avec attribution.
 
 SPDX : `Apache-2.0` (code) / `CC-BY-4.0` (docs).
 
-© 2026 Joey Leonard. *(Adapter ce nom d'attribution si besoin avant publication.)*
+© 2026 Joey Leonard.

@@ -151,7 +151,7 @@ P3b (append+get) est ×4 plus lent au p99 que P3a — le fsync domine la tail la
 - `BENCH_N` = 100 000 000 (10⁸ entrées)
 - `n_measures` = 10 000 cycles `append_durable + get` par run
 - Régime déclaré : `cache-mixte` (drop_caches non appliqué, NVMe effectivement sollicité — io_wait 19–24 %)
-- Bench dir : `/home/joey-leonard/t5bis-bench/` (WD SN530 ext4)
+- Bench dir : `~/t5bis-bench/` (WD SN530 ext4)
 - Runs consécutifs sans refroidissement entre RB1, RB2, RB3
 
 ## Fichiers

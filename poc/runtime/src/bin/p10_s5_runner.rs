@@ -397,6 +397,22 @@ async fn main() {
     eprintln!("  elapsed     : {}ms", elapsed_ms);
     eprintln!("rapport → {}", args.out_report);
 
+    // Shutdown ordonné : drop(fg_txs/sv_txs) plus haut ne suffit pas — le Scheduler
+    // garde ses propres clones de senders et ne joint jamais les run_loops. Évincer
+    // (= joindre) puis dropper les Arcs store/log AVANT remove_dir_all, sinon
+    // suppression d'une RocksDB ouverte + process::exit() course les threads
+    // background C++ (abort selon la glibc). Même séquence que sef1/s12_runner.
+    for id in fg_ids.iter().chain(sv_ids.iter()) {
+        if scheduler.is_dormant(id) {
+            continue; // déjà évincé : sa run_loop a déjà été jointe par evict_agent
+        }
+        // Err = agent déjà terminé/reapé : rien à joindre, on ignore.
+        let _ = scheduler.evict_agent(id).await;
+    }
+    drop(scheduler);
+    drop(store);
+    drop(log);
+
     std::fs::remove_dir_all(&tmp_dir).ok();
     std::process::exit(if verdict == "PASS" { 0 } else { 1 });
 }

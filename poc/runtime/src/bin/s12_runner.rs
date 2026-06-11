@@ -307,6 +307,25 @@ async fn run(args: &Args) -> bool {
     });
     println!("{report}");
 
+    // ── Shutdown ordonné (même séquence que sef1_runner) ─────────────────────
+    // Les run_loops (tasks tokio spawnées par Scheduler::register) détiennent
+    // des Arc<ContentStore>/Arc<CausalLog>. evict_agent est la seule API du
+    // Scheduler qui JOINT la run_loop (handle.await). Joindre puis dropper tous
+    // les Arcs AVANT remove_dir_all : sinon on supprime les fichiers d'une
+    // RocksDB ouverte et process::exit() course les threads background C++
+    // (flush/compaction) → pthread lock EINVAL → abort(), selon la glibc.
+    for id in &agents {
+        if scheduler.is_dormant(id) {
+            continue; // déjà évincé : sa run_loop a déjà été jointe par evict_agent
+        }
+        // Err = agent déjà terminé/reapé : rien à joindre, on ignore.
+        let _ = scheduler.evict_agent(id).await;
+    }
+    drop(senders);
+    drop(scheduler);
+    drop(store);
+    drop(log);
+
     let _ = std::fs::remove_dir_all(&args.db_root);
     pass
 }

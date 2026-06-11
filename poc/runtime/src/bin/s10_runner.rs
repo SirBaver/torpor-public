@@ -292,7 +292,10 @@ async fn run(args: &Args) -> bool {
 
     println!("{report}");
 
-    // Nettoyage du répertoire temporaire
+    // Nettoyage du répertoire temporaire — fermer la DB d'abord (les tasks sont
+    // déjà jointes plus haut) : supprimer les fichiers d'une RocksDB ouverte
+    // course ses threads background C++ au process::exit (abort selon la glibc).
+    drop(store);
     let _ = std::fs::remove_dir_all(&args.db_root);
 
     pass

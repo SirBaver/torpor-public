@@ -4,8 +4,11 @@
 name = "redb"
 version = "4.1.0"
 edition = "2024"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/cberner/redb"
 # Fork no_std pour seL4 Phase 9 C.5 (ADR-0042)
-# Source : redb 4.1.0 upstream, portage no_std en cours
+# Source : redb 4.1.0 upstream (© Christopher Berner, MIT OR Apache-2.0 — voir LICENSE-MIT / LICENSE-APACHE)
+# Modifications : portage no_std, voir README.md
 
 [lib]
 name = "redb"
