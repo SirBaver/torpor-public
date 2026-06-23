@@ -18,3 +18,28 @@ layout: default
   </footer>
   {% endif %}
 </article>
+
+<!-- Rendu des blocs ```mermaid``` (kramdown+rouge les emballe dans .language-mermaid) -->
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  (function () {
+    function render() {
+      document.querySelectorAll('.language-mermaid').forEach(function (el) {
+        if (!el || !el.parentNode) return;
+        var codeEl = el.querySelector('code') || el;
+        var src = (codeEl.innerText || codeEl.textContent).trim();
+        var div = document.createElement('div');
+        div.className = 'mermaid';
+        div.textContent = src;
+        el.replaceWith(div);
+      });
+      if (window.mermaid) {
+        window.mermaid.initialize({ startOnLoad: false, theme: 'neutral', securityLevel: 'loose' });
+        try { window.mermaid.run(); }
+        catch (e) { try { window.mermaid.init(undefined, '.mermaid'); } catch (e2) {} }
+      }
+    }
+    if (document.readyState !== 'loading') render();
+    else document.addEventListener('DOMContentLoaded', render);
+  })();
+</script>
