@@ -1,0 +1,13 @@
+# ILLUSTRATION DU PRINCIPE — CE N'EST PAS LE RUNTIME TORPOR (voir README.md).
+[package]
+name = "content-addressing-demo"
+version = "0.0.0"
+edition = "2021"
+publish = false
+
+[[bin]]
+name = "content_addressing_demo"
+path = "content_addressing_demo.rs"
+
+[dependencies]
+sha2 = "0.10"

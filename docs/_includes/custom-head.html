@@ -1,0 +1,29 @@
+<!-- Rendu des blocs ```mermaid``` (non géré par minima) + ajustements de la série -->
+<style>
+  .torpor-kicker { font-variant: small-caps; letter-spacing: .02em; }
+  .post-content img { max-width: 100%; height: auto; display: block; margin: 1.2em auto; border: 1px solid #e6e6e6; border-radius: 4px; }
+  .post-content em { color: #444; }
+  .post-content table { display: block; overflow-x: auto; }
+  .mermaid { margin: 1.4em auto; text-align: center; }
+  .torpor-foot { margin-top: 2em; padding-top: 1em; border-top: 1px solid #e6e6e6; font-size: .85em; color: #777; }
+</style>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    // kramdown+rouge emballe le bloc dans <div class="language-mermaid">…<code>…
+    document.querySelectorAll(".language-mermaid, code.language-mermaid").forEach(function (el) {
+      var holder = el.classList.contains("language-mermaid") ? el : el;
+      var code = el.querySelector ? (el.querySelector("code") || el) : el;
+      var src = code.textContent;
+      var div = document.createElement("div");
+      div.className = "mermaid";
+      div.textContent = src;
+      (holder.closest(".language-mermaid") || holder).replaceWith(div);
+    });
+    if (window.mermaid) {
+      mermaid.initialize({ startOnLoad: false, theme: "neutral", securityLevel: "strict" });
+      mermaid.run();
+    }
+  });
+</script>

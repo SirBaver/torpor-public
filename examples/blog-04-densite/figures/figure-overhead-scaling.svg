@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="470" viewBox="0 0 720 470" font-family="DejaVu Sans, Arial, sans-serif">
+<rect width="720" height="470" fill="#ffffff"/>
+<text x="360.0" y="26" text-anchor="middle" font-size="16" font-weight="bold" fill="#1a1a1a">Overhead mémoire par agent — scaling (PoC Linux, régime R2)</text>
+<line x1="72" y1="400.0" x2="692" y2="400.0" stroke="#e6e6e6"/>
+<text x="62" y="404.0" text-anchor="end" font-size="11" fill="#555">8,8</text>
+<line x1="72" y1="330.4" x2="692" y2="330.4" stroke="#e6e6e6"/>
+<text x="62" y="334.4" text-anchor="end" font-size="11" fill="#555">9</text>
+<line x1="72" y1="260.8" x2="692" y2="260.8" stroke="#e6e6e6"/>
+<text x="62" y="264.8" text-anchor="end" font-size="11" fill="#555">9,2</text>
+<line x1="72" y1="191.2" x2="692" y2="191.2" stroke="#e6e6e6"/>
+<text x="62" y="195.2" text-anchor="end" font-size="11" fill="#555">9,4</text>
+<line x1="72" y1="121.6" x2="692" y2="121.6" stroke="#e6e6e6"/>
+<text x="62" y="125.6" text-anchor="end" font-size="11" fill="#555">9,6</text>
+<line x1="72" y1="52.0" x2="692" y2="52.0" stroke="#e6e6e6"/>
+<text x="62" y="56.0" text-anchor="end" font-size="11" fill="#555">9,8</text>
+<line x1="72.0" y1="52" x2="72.0" y2="400" stroke="#f0f0f0"/>
+<text x="72.0" y="420" text-anchor="middle" font-size="11" fill="#555">100</text>
+<line x1="219.9" y1="52" x2="219.9" y2="400" stroke="#f0f0f0"/>
+<text x="219.9" y="420" text-anchor="middle" font-size="11" fill="#555">300</text>
+<line x1="382.0" y1="52" x2="382.0" y2="400" stroke="#f0f0f0"/>
+<text x="382.0" y="420" text-anchor="middle" font-size="11" fill="#555">1 000</text>
+<line x1="529.9" y1="52" x2="529.9" y2="400" stroke="#f0f0f0"/>
+<text x="529.9" y="420" text-anchor="middle" font-size="11" fill="#555">3 000</text>
+<line x1="692.0" y1="52" x2="692.0" y2="400" stroke="#f0f0f0"/>
+<text x="692.0" y="420" text-anchor="middle" font-size="11" fill="#555">10 000</text>
+<rect x="72" y="52" width="620" height="348" fill="none" stroke="#999"/>
+<line x1="72" y1="104.2" x2="692" y2="104.2" stroke="#c0392b" stroke-width="1.2" stroke-dasharray="6 4"/>
+<text x="686" y="98.2" text-anchor="end" font-size="11" fill="#c0392b">asymptote A = 9,65 KB</text>
+<polyline points="72.0,292.1 78.6,283.2 85.1,274.6 91.7,266.5 98.3,258.8 104.8,251.4 111.4,244.4 118.0,237.8 124.5,231.4 131.1,225.3 137.7,219.6 144.3,214.1 150.8,208.8 157.4,203.9 164.0,199.1 170.5,194.6 177.1,190.3 183.7,186.2 190.2,182.3 196.8,178.6 203.4,175.0 209.9,171.7 216.5,168.4 223.1,165.4 229.6,162.5 236.2,159.7 242.8,157.1 249.4,154.5 255.9,152.1 262.5,149.9 269.1,147.7 275.6,145.6 282.2,143.6 288.8,141.8 295.3,140.0 301.9,138.3 308.5,136.6 315.0,135.1 321.6,133.6 328.2,132.2 334.7,130.9 341.3,129.6 347.9,128.4 354.5,127.3 361.0,126.2 367.6,125.1 374.2,124.1 380.7,123.2 387.3,122.3 393.9,121.4 400.4,120.6 407.0,119.8 413.6,119.1 420.1,118.4 426.7,117.7 433.3,117.0 439.8,116.4 446.4,115.8 453.0,115.3 459.6,114.8 466.1,114.3 472.7,113.8 479.3,113.3 485.8,112.9 492.4,112.5 499.0,112.1 505.5,111.7 512.1,111.3 518.7,111.0 525.2,110.7 531.8,110.4 538.4,110.1 544.9,109.8 551.5,109.5 558.1,109.3 564.7,109.0 571.2,108.8 577.8,108.6 584.4,108.4 590.9,108.2 597.5,108.0 604.1,107.8 610.6,107.6 617.2,107.5 623.8,107.3 630.3,107.2 636.9,107.0 643.5,106.9 650.0,106.8 656.6,106.6 663.2,106.5 669.8,106.4 676.3,106.3 682.9,106.2 689.5,106.1" fill="none" stroke="#2c6fbb" stroke-width="2"/>
+<circle cx="692.0" cy="106.1" r="5" fill="#ffffff" stroke="#2c6fbb" stroke-width="2"/>
+<text x="692.0" y="126.1" text-anchor="middle" font-size="10" fill="#2c6fbb">prédit 9,64</text>
+<circle cx="72.0" cy="295.6" r="5" fill="#1a1a1a"/>
+<text x="72.0" y="285.6" text-anchor="middle" font-size="10" fill="#1a1a1a">9,1</text>
+<circle cx="219.9" cy="156.4" r="5" fill="#1a1a1a"/>
+<text x="219.9" y="146.4" text-anchor="middle" font-size="10" fill="#1a1a1a">9,5</text>
+<circle cx="382.0" cy="121.6" r="5" fill="#1a1a1a"/>
+<text x="382.0" y="111.6" text-anchor="middle" font-size="10" fill="#1a1a1a">9,6</text>
+<circle cx="529.9" cy="121.6" r="5" fill="#1a1a1a"/>
+<text x="529.9" y="111.6" text-anchor="middle" font-size="10" fill="#1a1a1a">9,6</text>
+<text x="382.0" y="440" text-anchor="middle" font-size="12" fill="#333">N agents (échelle log)</text>
+<text x="18" y="226.0" text-anchor="middle" font-size="12" fill="#333" transform="rotate(-90 18 226.0)">overhead (KB / agent)</text>
+<text x="72" y="460" font-size="10" fill="#777">Mesuré T6 (K=3) · fit overhead(N) = 9,65 − 54/N, R² = 0,99 · overhead hébergé (dormant), densité hébergée ≠ active</text>
+</svg>

@@ -1,0 +1,48 @@
+# Transcript réel — demo-tui --selftest-lineage
+# provenance : commit 1d0cb78 · branche chantier-blog-adr0065 · host Notebook · 2026-06-23T17:38:15Z
+# substrat : PoC Linux (R-blog-1) · régime R1 · rejeu (aucun Ollama)
+# régénérer : CXXFLAGS="-include cstdint" cargo run -p os-poc-runtime --features demo-tui --bin demo-tui -- --selftest-lineage
+# ---
+[PASS] profileur émet un profil
+[PASS] transformateur émet un artefact
+[PASS] publication réussie (WROTE) sous cap valide
+[PASS] SchedulerRollback tracé pour le transformateur
+[PASS] rollback révoque ≥ 1 capability (caps_invalidated)
+[PASS] cap de publication absente du store après rollback
+[PASS] publication post-rollback REFUSÉE (DENIED, cap révoquée)
+[PASS] CapabilityDenied (0x14) émis par le runtime
+[PASS] re-dérivation : le profileur (TOUJOURS VIVANT) émet un NOUVEAU profil
+[PASS] re-dérivation : le transformateur émet un NOUVEL artefact
+[PASS] re-publication sous cap fraîche réussie (WROTE) — branche propre
+[PASS] intrus : accès hors-scope REFUSÉ et TRACÉ (CapabilityDenied 0x14 dans le log)
+
+--- Vue MODÉLISATION (RENDU RÉEL ratatui via TestBackend) ---
+┌ MODÉLISATION ────────────────────────────────────────────────────────────────────────────────────┐
+│◆ enregistrement source  (CSV clients, 20 lignes)                                                 │
+│├─ ◆ profileur · profil qualité  [v1]  17f483b2                                                   │
+││  └─ ◆ transformateur · artefact  [PUBLISHED]  55f45308                                          │
+││     ├─ ✓ publication → published/ (published/clients_clean)  2cb75374                           │
+││     ├─ ⟲ rollback (P2) · droit de publier retiré  8d107060                                      │
+││     └─ ⛔  publication → published/  REFUSÉE (cap révoquée, 0x14)  1c59a3ef                      │
+│└─ ◆ profileur · profil qualité  [v2 · re-dérivation]  542679bd                                   │
+│   └─ ◆ transformateur · artefact  [PUBLISHED]  8cdf8e94                                          │
+│      └─ ✓ publication → published/ (published/clients_clean)  cfdff814                           │
+│                                                                                                  │
+│◆ intrus  (agent hors périmètre — isolation P4)                                                   │
+│└─ ⛔  accès pii/clients_export REFUSÉ à la frontière (CapabilityDenied 0x14)  c5baeee9            │
+│                                                                                                  │
+│                                                                                                  │
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+--- Même arbre, DÉFILÉ vers le bas (scroll=8) — l'intrus doit apparaître ---
+┌ scroll=8 (bas) ──────────────────────────────────────────────────────────────────────────────────┐
+│      └─ ✓ publication → published/ (published/clients_clean)  cfdff814                           │
+│                                                                                                  │
+│◆ intrus  (agent hors périmètre — isolation P4)                                                   │
+│└─ ⛔  accès pii/clients_export REFUSÉ à la frontière (CapabilityDenied 0x14)  c5baeee9            │
+│                                                                                                  │
+│                                                                                                  │
+└──────────────────────────────────────────────────────────────────────────────────────────────────┘
+
+SELFTEST lineage : PASS
+# --- exit: 0 ---

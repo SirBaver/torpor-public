@@ -1,0 +1,14 @@
+# Sortie de l'ILLUSTRATION (vérifiée par `cargo run`, 2026-06-19).
+# Ceci est la sortie du SNIPPET PÉDAGOGIQUE (principe), PAS du runtime Torpor.
+# Les hashes sont déterministes (SHA-256 du contenu). Aucune borne chiffrée.
+
+analyse   id = 8be89c159f4ce06cdc95fb92f0aff5578cb309d7429aa3683555c8099171a696
+correctif id = d2ff79cb473de7f1ffcff150312b70f40b8944def6229937213db85613d184f9  (caused_by = [8be89c159f4ce06cdc95fb92f0aff5578cb309d7429aa3683555c8099171a696])
+
+-- falsification de « analyse » --
+id stocke    = 8be89c159f4ce06cdc95fb92f0aff5578cb309d7429aa3683555c8099171a696
+id recalcule = 15f8213a84e19218f0a80e18d6edc98287859146ad8bf07e1eb737c949571346
+le correctif pointe 8be89c159f4ce06cdc95fb92f0aff5578cb309d7429aa3683555c8099171a696
+orphelin detecte ? true
+
+OK : falsification detectable (id != hash) et lien causal casse.

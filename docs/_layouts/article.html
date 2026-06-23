@@ -1,0 +1,20 @@
+---
+layout: default
+---
+<article class="post torpor-article">
+  <header class="post-header">
+    <p class="post-meta torpor-kicker">
+      {{ page.serie }}{% if page.date %} · <time datetime="{{ page.date | date_to_xmlschema }}">{{ page.date | date: "%-d %B %Y" }}</time>{% endif %}
+    </p>
+  </header>
+
+  <div class="post-content">
+    {{ content }}
+  </div>
+
+  {% if page.regime %}
+  <footer class="torpor-foot">
+    <p class="regime">Régime de cet article : {{ page.regime }}.</p>
+  </footer>
+  {% endif %}
+</article>

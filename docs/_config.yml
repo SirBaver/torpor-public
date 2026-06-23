@@ -1,0 +1,40 @@
+title: Torpor
+tagline: "Un OS pour des agents : effets relisables, réversibles, confinés."
+description: >-
+  Série d'articles sur Torpor — un substrat d'exécution pour agents autonomes :
+  journal causal adressé par le contenu, rollback transactionnel, isolation par
+  capabilities, atomicité au crash. Bornes citées avec leur substrat de mesure.
+author: Joey Leonard
+lang: fr
+
+# Project page GitHub Pages : https://sirbaver.github.io/torpor-public/
+# (si un domaine personnalisé est ajouté plus tard, remettre baseurl: "")
+url: "https://sirbaver.github.io"
+baseurl: "/torpor-public"
+
+theme: minima
+markdown: kramdown
+highlighter: rouge
+
+# Nav épurée : le titre du site renvoie à l'accueil, pas de liste d'articles en haut.
+header_pages: []
+
+# Le site est servi depuis /docs ; on exclut tout ce qui n'est pas la série blog.
+exclude:
+  - archive
+  - demo
+  - design
+  - guides
+  - briefing-claude-cli.md
+  - memo-cadrage-projet.md
+  - memo-revue-strategique-2026-06.md
+  - onboarding-parcours.md
+  - use-cases-catalogue.md
+  - Gemfile
+  - Gemfile.lock
+  - vendor
+  - .bundle
+
+plugins:
+  - jekyll-feed
+  - jekyll-seo-tag

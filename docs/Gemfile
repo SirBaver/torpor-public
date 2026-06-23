@@ -1,0 +1,6 @@
+source "https://rubygems.org"
+
+# Reproduit l'environnement de build de GitHub Pages (thème minima + plugins inclus).
+# Aperçu local :  cd docs && bundle install && bundle exec jekyll serve
+gem "github-pages", group: :jekyll_plugins
+gem "webrick", "~> 1.8"  # requis pour `jekyll serve` sous Ruby ≥ 3
