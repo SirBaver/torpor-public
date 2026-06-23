@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" font-family="DejaVu Sans, Arial, sans-serif">
+<rect width="1200" height="675" fill="#f7f7f5"/>
+<text x="600.0" y="70" text-anchor="middle" font-size="34" font-weight="bold" fill="#1a1a1a">La supervision d’un agent autonome est asymétrique</text>
+<text x="600.0" y="108" text-anchor="middle" font-size="19" fill="#666">Le superviseur est hors de la boucle temps réel → le système se conçoit durable d’abord</text>
+<rect x="70" y="300" width="300" height="150" rx="12" fill="#e8f0fe" stroke="#3b6fb6" stroke-width="2"/>
+<text x="220.0" y="344" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1a1a">Agent autonome</text>
+<text x="220.0" y="370" text-anchor="middle" font-size="20" font-weight="normal" fill="#1a1a1a"></text>
+<text x="220.0" y="396" text-anchor="middle" font-size="20" font-weight="normal" fill="#1a1a1a">décide seul,</text>
+<text x="220.0" y="422" text-anchor="middle" font-size="20" font-weight="normal" fill="#1a1a1a">pendant des heures</text>
+<rect x="450" y="300" width="300" height="150" rx="12" fill="#fef6e0" stroke="#c79a26" stroke-width="2"/>
+<text x="600.0" y="344" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1a1a">Journal durable</text>
+<text x="600.0" y="370" text-anchor="middle" font-size="20" font-weight="normal" fill="#1a1a1a"></text>
+<text x="600.0" y="396" text-anchor="middle" font-size="20" font-weight="normal" fill="#1a1a1a">inaltérable · rejouable</text>
+<text x="600.0" y="422" text-anchor="middle" font-size="20" font-weight="normal" fill="#1a1a1a">(append-only)</text>
+<rect x="830" y="150" width="300" height="150" rx="12" fill="#eef7ee" stroke="#4a934a" stroke-width="2"/>
+<text x="980.0" y="194" text-anchor="middle" font-size="20" font-weight="bold" fill="#1a1a1a">Superviseur humain</text>
+<text x="980.0" y="220" text-anchor="middle" font-size="20" font-weight="normal" fill="#1a1a1a"></text>
+<text x="980.0" y="246" text-anchor="middle" font-size="20" font-weight="normal" fill="#1a1a1a">relit · annule · valide</text>
+<text x="980.0" y="272" text-anchor="middle" font-size="20" font-weight="normal" fill="#1a1a1a">(hors temps réel)</text>
+<rect x="830" y="450" width="300" height="130" rx="12" fill="#1a1a1a" stroke="#1a1a1a" stroke-width="2"/>
+<text x="980.0" y="510" text-anchor="middle" font-size="21" font-weight="normal" fill="#ffffff">Conséquence de design :</text>
+<text x="980.0" y="537" text-anchor="middle" font-size="21" font-weight="bold" fill="#ffffff">durable d’abord</text>
+<defs><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#444"/></marker></defs>
+<line x1="370" y1="375" x2="448" y2="375" stroke="#444" stroke-width="2.5" marker-end="url(#a)"/>
+<text x="409" y="365" text-anchor="middle" font-size="15" fill="#444">écrit chaque action</text>
+<line x1="855" y1="300" x2="690" y2="372" stroke="#4a934a" stroke-width="2.5" stroke-dasharray="7 5" marker-end="url(#a)"/>
+<text x="800" y="320" text-anchor="middle" font-size="15" fill="#4a934a">relit / annule / valide après coup</text>
+<line x1="750" y1="395" x2="828" y2="470" stroke="#444" stroke-width="2.5" marker-end="url(#a)"/>
+<text x="600.0" y="640" text-anchor="middle" font-size="15" fill="#999">Schéma conceptuel · Torpor — série, article 1/8</text>
+</svg>
